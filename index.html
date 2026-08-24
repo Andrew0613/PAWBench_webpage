@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="PAWBench evaluates whether video generators recover the distribution of possible physical futures under the same initial observation and action.">
+    <meta name="theme-color" content="#f7f2df">
+    <link rel="canonical" href="https://andrew0613.github.io/PAWBench_webpage/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PAWBench">
+    <meta property="og:title" content="PAWBench: How Far Are We from Probabilistically Aligned World Modeling?">
+    <meta property="og:description" content="A diagnostic benchmark for evaluating video generators as stochastic samplers of world dynamics.">
+    <meta property="og:url" content="https://andrew0613.github.io/PAWBench_webpage/">
+    <meta property="og:image" content="https://andrew0613.github.io/PAWBench_webpage/static/img/hero-teaser-spring.png">
+    <meta property="og:image:alt" content="PAWBench teaser illustrating branching possible futures under the same state and action.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PAWBench: How Far Are We from Probabilistically Aligned World Modeling?">
+    <meta name="twitter:description" content="A diagnostic benchmark for evaluating video generators as stochastic samplers of world dynamics.">
+    <meta name="twitter:url" content="https://andrew0613.github.io/PAWBench_webpage/">
+    <meta name="twitter:image" content="https://andrew0613.github.io/PAWBench_webpage/static/img/hero-teaser-spring.png">
+
+    <title>PAWBench: How Far Are We from Probabilistically Aligned World Modeling?</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <script src="static/js/main.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#article">Skip to main content</a>
+
+    <nav class="nav-bar" id="nav-bar" aria-label="Floating page navigation">
+      <a class="nav-link" href="#motivation">Motivation</a>
+      <a class="nav-link" href="#benchmark">PAWBench</a>
+      <a class="nav-link" href="#paweval">PAWEval</a>
+      <a class="nav-link" href="#experiments">Results</a>
+      <a class="nav-link" href="#diagnostics">Diagnostics</a>
+      <a class="nav-link" href="#visual-evidence">Visual evidence</a>
+      <a class="nav-link" href="#human-study">Alignment</a>
+    </nav>
+
+    <div class="header-wrapper">
+      <div class="header-container" id="header-container">
+        <div class="header-content">
+          <h1><i>PAWBench</i></h1>
+          <h2>How Far Are We from Probabilistically Aligned World Modeling?</h2>
+
+          <div class="icon-container">
+            <div class="icon-item">
+              <span class="icon-mark" aria-hidden="true">P</span>
+              <div><strong>PAWBench</strong>: 50 repeated-rollout physical scenarios for testing distributional world modeling.</div>
+            </div>
+            <div class="icon-item">
+              <span class="icon-mark" aria-hidden="true">E</span>
+              <div><strong>PAWEval</strong>: an outcome-level rubric protocol that converts generated videos into empirical future distributions.</div>
+            </div>
+            <div class="icon-item">
+              <span class="icon-mark" aria-hidden="true">D</span>
+              <div><strong>Diagnostics</strong>: controlled probes for language prompting, coupled noise, and training-distribution shifts.</div>
+            </div>
+          </div>
+
+          <div class="button-container" role="group" aria-label="Project resources">
+            <button class="button" type="button" disabled>Paper <span>Coming soon</span></button>
+            <button class="button" type="button" disabled>Code <span>Coming soon</span></button>
+            <button class="button" type="button" disabled>Data <span>Coming soon</span></button>
+          </div>
+        </div>
+        <div class="header-image">
+          <img draggable="false" src="static/img/hero-teaser-spring.png" width="1254" height="1254" alt="PAWBench spring-themed teaser visualizing one starting state branching into multiple possible physical futures." class="teaser-image">
+        </div>
+      </div>
+    </div>
+
+    <main id="article" tabindex="-1">
+      <section class="byline" aria-labelledby="authors-heading">
+        <div class="byline-container">
+          <h2 class="visually-hidden" id="authors-heading">Authors and affiliations</h2>
+          <p class="author-list">
+            <span class="author-link">Yuandong Pu<sup>1,2</sup></span>
+            <span class="author-link">Le Zhuo<sup>3</sup></span>
+            <span class="author-link">Sayak Paul<sup>4</sup></span>
+            <span class="author-link">Gabriel Jorge Menezes<sup>3</sup></span>
+            <span class="author-link">Avram Đorđević<sup>3</sup></span>
+            <span class="author-link">Shiyang Li<sup>2</sup></span>
+            <span class="author-link">Yifan Zhou<sup>1</sup></span>
+            <span class="author-link">Bin Fu<sup>2</sup></span>
+            <span class="author-link">Wenlong Zhang<sup>2</sup></span>
+            <span class="author-link">Junjun He<sup>5</sup></span>
+            <span class="author-link">Qiao Yu<sup>2</sup></span>
+            <span class="author-link">Yihao Liu<sup>2,†</sup></span>
+            <span class="author-link">Jinbo Xing<sup>6</sup></span>
+            <span class="author-link">Xi Chen<sup>7,†</sup></span>
+          </p>
+          <p class="text affiliation-list">
+            <span><sup>1</sup> Shanghai Jiao Tong University</span>
+            <span><sup>2</sup> Shanghai AI Laboratory</span>
+            <span><sup>3</sup> Krea AI</span>
+            <span><sup>4</sup> Hugging Face</span>
+            <span><sup>5</sup> Shanghai Innovation Institute</span>
+            <span><sup>6</sup> Tongyi Lab</span>
+            <span><sup>7</sup> The University of Hong Kong</span>
+          </p>
+          <p class="author-note">
+            This work was done during Yuandong Pu's internship at Shanghai AI Laboratory. <span><sup>†</sup> Corresponding authors.</span>
+          </p>
+        </div>
+      </section>
+
+      <nav class="icon-row" aria-label="Section jumps">
+        <a href="#motivation" class="icon-link"><span class="icon">01</span> Motivation</a>
+        <a href="#benchmark" class="icon-link"><span class="icon">02</span> PAWBench</a>
+        <a href="#paweval" class="icon-link"><span class="icon">03</span> PAWEval</a>
+        <a href="#experiments" class="icon-link"><span class="icon">04</span> Results</a>
+        <a href="#diagnostics" class="icon-link"><span class="icon">05</span> Diagnostics</a>
+        <a href="#visual-evidence" class="icon-link"><span class="icon">06</span> Visual evidence</a>
+        <a href="#human-study" class="icon-link"><span class="icon">07</span> Alignment</a>
+      </nav>
+
+      <p class="click-hint"><strong>Click to jump to each section.</strong></p>
+
+      <hr>
+
+      <section id="motivation" class="sub-section">
+        <h1 class="text">How far are current video generators from probabilistically aligned world modeling?</h1>
+        <p class="text">
+          Recent video generation models are increasingly framed as world models. Many physical processes can unfold in more than one valid way, so a world model should reproduce not only a plausible trajectory, but also the distribution of possible behaviors under the same initial observation and action.
+        </p>
+        <p class="text">
+          Existing evaluations largely assess individual-video plausibility and do not test whether repeated generations recover the correct distribution. PAWBench formalizes this distribution-level requirement as <b>probabilistic alignment</b>.
+        </p>
+        <figure>
+          <button class="figure-button" type="button" data-zoom-src="static/img/one_plausible_future.png" data-zoom-caption="A single plausible rollout can hide probability-mass errors and missing valid futures." aria-label="Enlarge one plausible future figure">
+            <img data-zoomable draggable="false" src="static/img/one_plausible_future.png" width="2653" height="975" alt="A paper figure explaining why one plausible future is only one sample from a wider outcome distribution." loading="lazy">
+          </button>
+          <figcaption>
+            <strong>Figure 1:</strong> One plausible future is not enough. PAWBench asks whether repeated rollouts recover the support and probabilities of possible futures.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="benchmark" class="sub-section">
+        <h1 class="text">PAWBench: A Benchmark for Possible Futures</h1>
+        <p class="text">
+          PAWBench evaluates a video generation model through repeated rollouts conditioned on the same initial observation and action. Each benchmark item provides a source image, an action prompt, a finite set of valid terminal outcomes, and, when available, a reference distribution over those outcomes.
+        </p>
+
+        <div class="stat-grid" role="list" aria-label="PAWBench benchmark facts">
+          <div role="listitem"><strong>50</strong><span>scenarios</span></div>
+          <div role="listitem"><strong>25 / 25</strong><span>Calibration / Coverage</span></div>
+          <div role="listitem"><strong>K = 50</strong><span>rollouts per scenario</span></div>
+          <div role="listitem"><strong>11</strong><span>video generators</span></div>
+        </div>
+
+        <section class="scenario-explorer" aria-label="PAWBench scenario track explorer">
+          <div class="scenario-tabs" role="tablist" aria-label="PAWBench tracks">
+            <button class="scenario-tab active" type="button" role="tab" id="scenario-tab-calibration" aria-selected="true" aria-controls="scenario-panel-calibration" data-scenario-tab="calibration">PAW-Calibration</button>
+            <button class="scenario-tab" type="button" role="tab" id="scenario-tab-coverage" aria-selected="false" aria-controls="scenario-panel-coverage" data-scenario-tab="coverage" tabindex="-1">PAW-Coverage</button>
+          </div>
+          <div class="scenario-panel" id="scenario-panel-calibration" role="tabpanel" aria-labelledby="scenario-tab-calibration" data-scenario-panel="calibration">
+            <h2>Probability mass</h2>
+            <p>25 scenarios with analytically specified or symmetry-derived reference distributions.</p>
+            <ul>
+              <li>Toss</li>
+              <li>Rotation</li>
+              <li>Routing</li>
+              <li>Draw-style randomizers</li>
+            </ul>
+          </div>
+          <div class="scenario-panel" id="scenario-panel-coverage" role="tabpanel" aria-labelledby="scenario-tab-coverage" data-scenario-panel="coverage" hidden>
+            <h2>Valid support</h2>
+            <p>25 scenarios with enumerable valid outcomes but no reliable reference probabilities.</p>
+            <ul>
+              <li>Collision</li>
+              <li>Stability</li>
+              <li>Agent interaction</li>
+              <li>Material transition</li>
+            </ul>
+          </div>
+        </section>
+
+        <p class="text">
+          This split separates two failures that single-sample evaluation cannot distinguish: probability misallocation and missing valid outcomes. The rejected taxonomy raster is intentionally not used here; the scenario presentation is HTML so it cannot publish the known coin/die mismatch.
+        </p>
+      </section>
+
+      <section id="paweval" class="sub-section">
+        <h1 class="text">PAWEval: Outcome-Level Evaluation for Repeated Rollouts</h1>
+        <p class="text">
+          PAWEval maps generated rollouts to terminal physical outcomes. Gemini 3.5 Flash applies a frozen, scene-specific rubric and returns either an in-schema outcome label or an outcome-readout failure. Readable, in-schema outcome labels are normalized into the conditional empirical distribution used by PAW-Calibration and PAW-Coverage; model-scene pairs become scoreable only after passing the outcome-readout gate.
+        </p>
+        <figure>
+          <button class="figure-button" type="button" data-zoom-src="static/img/paweval_overview.png" data-zoom-caption="PAWEval maps K repeated rollouts under the same state and action into outcome distributions." aria-label="Enlarge PAWEval overview">
+            <img data-zoomable draggable="false" src="static/img/paweval_overview.png" width="1229" height="360" alt="PAWEval paper figure showing repeated video rollouts, rubric-based outcome readout, and aggregation into a future distribution." loading="lazy">
+          </button>
+          <figcaption>
+            <strong>Figure 2:</strong> PAWEval converts repeated rollouts into empirical distributions over valid terminal outcomes, while reporting readout failures separately.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="experiments" class="sub-section">
+        <h1 class="text">State-of-the-Art Model Performance on PAWBench</h1>
+        <p class="text">
+          The main evaluation samples <b>K=50</b> independent rollouts per scenario and system. A scene passes the outcome-readout gate when at least 20 of 50 rollouts yield readable, in-schema outcomes. Scene Pass Rate (SPR) is the percentage of all 25 scenes in the corresponding track that pass this gate.
+        </p>
+
+        <div class="table-intro full-width-table" id="main-results-note">
+          <p>
+            <strong>Main PAWBench results.</strong> PAW-Calibration reports conditional TVD ×100 (lower is better); a 70/30 model distribution against a 50/50 reference scores 20, while an exact match scores 0. PAW-Coverage reports conditional valid-support recovery percentage (higher is better). Avg. is computed over passing scenes; SPR is the percentage of all 25 scenes that pass. N/A means no scene in that mechanism group passes the gate.
+          </p>
+          <p class="swipe-hint">Swipe horizontally to compare all metrics.</p>
+        </div>
+
+        <div class="table-container full-width-table" role="region" aria-labelledby="main-results-title" aria-describedby="main-results-note" tabindex="0">
+          <table class="data-table">
+            <caption id="main-results-title">Main PAWBench results for eleven video generation models.</caption>
+            <thead>
+              <tr>
+                <th scope="col" rowspan="2">Model</th>
+                <th scope="colgroup" colspan="6" class="tb-hdr">PAW-Calibration: conditional TVD ×100 ↓</th>
+                <th scope="colgroup" colspan="6" class="tb-hdr">PAW-Coverage: conditional Coverage % ↑</th>
+              </tr>
+              <tr>
+                <th scope="col">Avg.</th>
+                <th scope="col">SPR</th>
+                <th scope="col">Toss</th>
+                <th scope="col">Rot.</th>
+                <th scope="col">Rout.</th>
+                <th scope="col">Draw</th>
+                <th scope="col">Avg.</th>
+                <th scope="col">SPR</th>
+                <th scope="col">Coll.</th>
+                <th scope="col">Stab.</th>
+                <th scope="col">Agent</th>
+                <th scope="col">Mat.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">HappyHorse</th><td>43.1</td><td>92.0%</td><td>40.1</td><td>27.5</td><td>41.9</td><td>59.5</td><td>47.1</td><td>100.0%</td><td>45.0</td><td>36.8</td><td>49.0</td><td>58.3</td></tr>
+              <tr><th scope="row">Veo3.1 Fast</th><td>35.4</td><td>88.0%</td><td>37.1</td><td>12.2</td><td>32.4</td><td>55.0</td><td>41.8</td><td>100.0%</td><td>39.8</td><td>21.1</td><td>53.3</td><td>44.2</td></tr>
+              <tr><th scope="row">Kling 3 Std.</th><td>34.9</td><td>92.0%</td><td>29.9</td><td>20.3</td><td>38.7</td><td>46.0</td><td>52.8</td><td>88.0%</td><td>52.7</td><td>40.0</td><td>44.3</td><td>77.5</td></tr>
+              <tr><th scope="row">Seedance 2</th><td>30.5</td><td>100.0%</td><td>32.7</td><td>15.1</td><td>31.1</td><td>40.5</td><td>50.9</td><td>84.0%</td><td>48.6</td><td>50.0</td><td>44.3</td><td>67.5</td></tr>
+              <tr><th scope="row">Wan2.7</th><td>26.3</td><td>92.0%</td><td>26.0</td><td>12.2</td><td>26.8</td><td>36.5</td><td>50.0</td><td>96.0%</td><td>60.3</td><td>50.5</td><td>37.9</td><td>53.3</td></tr>
+              <tr class="table-divider"><td colspan="13"></td></tr>
+              <tr><th scope="row">Wan2.2</th><td>26.3</td><td>64.0%</td><td>22.4</td><td>15.8</td><td class="cell-second">23.2</td><td>45.9</td><td class="cell-second">63.4</td><td>92.0%</td><td class="cell-second">76.8</td><td class="cell-second">56.7</td><td>55.0</td><td>58.3</td></tr>
+              <tr><th scope="row">LTX-2.3</th><td>30.1</td><td>24.0%</td><td>29.3</td><td class="cell-second">11.0</td><td>N/A</td><td>41.0</td><td class="cell-best">71.7</td><td>72.0%</td><td class="cell-best">82.7</td><td>50.0</td><td class="cell-best">59.5</td><td class="cell-best">90.0</td></tr>
+              <tr><th scope="row">LTX-2.5</th><td>30.2</td><td>60.0%</td><td>30.2</td><td>17.1</td><td>39.9</td><td class="cell-second">27.1</td><td>57.4</td><td>88.0%</td><td>66.7</td><td>30.0</td><td class="cell-second">59.4</td><td>57.5</td></tr>
+              <tr><th scope="row">Cosmos 3 Super I2V</th><td class="cell-best">20.5</td><td>80.0%</td><td class="cell-best">19.4</td><td class="cell-best">3.6</td><td class="cell-best">17.7</td><td>35.5</td><td>55.2</td><td>92.0%</td><td>56.7</td><td>31.7</td><td>49.4</td><td class="cell-second">81.7</td></tr>
+              <tr><th scope="row">LingBot-Video-MoE</th><td>41.8</td><td>72.0%</td><td>31.8</td><td>13.4</td><td>44.4</td><td>60.8</td><td>58.8</td><td>100.0%</td><td>62.2</td><td class="cell-best">61.8</td><td>46.5</td><td>72.5</td></tr>
+              <tr><th scope="row">MiniMax H3</th><td class="cell-second">24.2</td><td>68.0%</td><td class="cell-second">22.0</td><td>14.0</td><td>28.9</td><td class="cell-best">26.5</td><td>48.7</td><td>92.0%</td><td>59.5</td><td>39.5</td><td>36.4</td><td>58.3</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="text">
+          No model combines well-aligned probability mass, broad support recovery, and reliable performance across scenes. Cosmos 3 Super I2V has the lowest conditional Calibration TVD, while LTX-2.3 has the highest conditional Coverage average, but their SPR values show different scene-level reliability limits.
+        </p>
+      </section>
+
+      <section id="diagnostics" class="sub-section">
+        <h1 class="text">Distribution-Shaping Interventions and Controlled Diagnostics</h1>
+        <p class="text">
+          PAWBench tests whether language conditioning, initial-noise sampling, or model training can reshape predictive distributions. Language can request individual futures, coupled noise can broaden finite-budget exploration, and fine-tuning can shift outcome frequencies; none reliably recovers the scene-conditioned distribution across different physical states.
+        </p>
+
+        <figure>
+          <button class="figure-button" type="button" data-zoom-src="static/img/causal_noncausal_interventions.png" data-zoom-caption="Representative causal and non-causal K=50 intervention pairs used as diagnostics, not as benchmark scores." aria-label="Enlarge causal intervention diagnostic">
+            <img data-zoomable draggable="false" src="static/img/causal_noncausal_interventions.png" width="2115" height="639" alt="Representative causal and non-causal paper diagnostic pairs showing that model distributions may shift for irrelevant cues or fail to shift for causal changes." loading="lazy">
+          </button>
+          <figcaption>
+            <strong>Figure 3:</strong> Two representative K=50 causal/non-causal pairs. Bars report P(outcome | valid readout): invalid readouts are excluded, there is no pooled score, and the figure is diagnostic only.
+          </figcaption>
+        </figure>
+
+        <div class="diagnostic-grid">
+          <article>
+            <h2>Language steering</h2>
+            <p>Prompt engineering and oracle target prompts separate future selection from video realization. Even explicit targets are realized only 37.6-58.1% of the time.</p>
+            <img src="static/img/explicit_target_realization.png" width="753" height="443" alt="Paper figure showing explicit target realization rates across video generators." loading="lazy">
+          </article>
+          <article>
+            <h2>Training distribution</h2>
+            <p>LoRA training mixtures shift left/right pencil outcomes, but the same global adjustment helps one initial state while worsening another.</p>
+            <img src="static/img/training_mass_response.png" width="837" height="444" alt="Paper figure showing generated left-fall frequency as training left-fall share increases." loading="lazy">
+          </article>
+        </div>
+
+        <p class="text evidence-note">
+          Evidence boundaries: explicit target rate uses 2,500 planned rows per model and failures count as misses. The training plot is conditional on readable left/right outcomes with invalid readouts excluded.
+        </p>
+      </section>
+
+      <section id="visual-evidence" class="sub-section">
+        <h1 class="text">Visual Evidence Browser</h1>
+        <p class="text">
+          Browse PAWBench paper figures and diagnostics using the same tabbed evidence pattern as the reference project page. These panels are not raw videos or additional rollout results; each case is labeled as paper evidence or a controlled diagnostic.
+        </p>
+
+        <section class="evidence-gallery" aria-label="PAWBench visual evidence browser">
+          <div class="evidence-tabs" role="tablist" aria-label="Evidence categories">
+            <button class="evidence-tab active" type="button" role="tab" id="evidence-tab-concept" aria-selected="true" aria-controls="evidence-panel" data-evidence-category="concept">Concept</button>
+            <button class="evidence-tab" type="button" role="tab" id="evidence-tab-evaluation" aria-selected="false" aria-controls="evidence-panel" data-evidence-category="evaluation" tabindex="-1">Evaluation</button>
+            <button class="evidence-tab" type="button" role="tab" id="evidence-tab-diagnostics" aria-selected="false" aria-controls="evidence-panel" data-evidence-category="diagnostics" tabindex="-1">Diagnostics</button>
+          </div>
+
+          <div class="evidence-case-meta" aria-live="polite" aria-atomic="true">
+            <p class="evidence-kind" id="evidence-kind">Paper evidence</p>
+            <h2 id="evidence-title">One plausible future</h2>
+            <p id="evidence-caption">A single rollout is one sample from a distribution; it cannot establish support or probability-mass alignment.</p>
+          </div>
+
+          <div class="evidence-frame" id="evidence-panel" role="tabpanel" aria-labelledby="evidence-tab-concept">
+            <button class="evidence-nav evidence-prev" type="button" data-evidence-nav="prev" aria-label="Previous evidence case">&#8249;</button>
+            <button class="figure-button evidence-figure" type="button" data-evidence-zoom aria-label="Enlarge current evidence figure">
+              <img id="evidence-image" src="static/img/one_plausible_future.png" width="2653" height="975" alt="Paper evidence figure: one plausible future is one sample from a wider outcome distribution.">
+            </button>
+            <button class="evidence-nav evidence-next" type="button" data-evidence-nav="next" aria-label="Next evidence case">&#8250;</button>
+          </div>
+        </section>
+      </section>
+
+      <section id="human-study" class="sub-section">
+        <h1 class="text">PAWEval / Outcome-Readout Alignment</h1>
+        <p class="text">
+          To test whether the observed PAWBench gap is merely a PAWEval outcome-readout artifact, the paper compares PAWEval with seven independent human judgments per video using the same scene-specific outcome space.
+        </p>
+
+        <div class="table-intro" id="human-results-note">
+          <p>
+            This table reports exact canonical-label agreement only when both PAWEval and the seven-vote human panel provide a clear physical outcome. It does <b>not</b> validate TVD, Coverage, or model rankings.
+          </p>
+          <p class="swipe-hint">Swipe horizontally to compare all columns.</p>
+        </div>
+
+        <div class="table-container human-table" role="region" aria-labelledby="human-results-title" aria-describedby="human-results-note" tabindex="0">
+          <table class="data-table">
+            <caption id="human-results-title">PAWEval-human agreement on comparable videos.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Human-consensus subset</th>
+                <th scope="col">Videos</th>
+                <th scope="col">Exact matches</th>
+                <th scope="col">Agreement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Overall</th><td>888</td><td>722</td><td>81.3%</td></tr>
+              <tr><th scope="row">Low consensus (3-4 votes)</th><td>213</td><td>125</td><td>58.7%</td></tr>
+              <tr><th scope="row">Moderate consensus (5 votes)</th><td>154</td><td>119</td><td>77.3%</td></tr>
+              <tr><th scope="row">High consensus (6-7 votes)</th><td>521</td><td>478</td><td>91.7%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="text">
+          The headline number is <b>722/888 = 81.3%</b> clear comparable label agreement. It is not reported as all-row accuracy and does not validate ranking claims.
+        </p>
+      </section>
+
+      <section id="conclusion" class="sub-section">
+        <h1 class="text">Conclusion</h1>
+        <p class="text">
+          PAWBench shows that plausible, diverse, or controllable rollouts do not by themselves establish probabilistically aligned world modeling. Across eleven current video generators, no model consistently matches the reference probabilities while recovering the range of valid futures.
+        </p>
+      </section>
+
+      <section id="acknowledgment" class="sub-section">
+        <h1 class="text">Acknowledgment</h1>
+        <p class="text">
+          We would like to thank all contributors to the PAWBench manuscript and evaluation pipeline. This webpage follows the public PICABench project-page structure and adapts it for PAWBench content.
+        </p>
+      </section>
+    </main>
+
+    <footer class="appendix-section">
+      <h3>Provisional BibTeX</h3>
+      <p class="text">Publication metadata is pending; no eprint, URL, DOI, or venue metadata is authorized for this provisional citation.</p>
+      <button class="copy-button" type="button" data-copy-bibtex>Copy BibTeX</button>
+      <pre class="bibtex" id="bibtex"><code>@misc{pu2026pawbench,
+  title={PAWBench: How Far Are We from Probabilistically Aligned World Modeling?},
+  author={Yuandong Pu and Le Zhuo and Sayak Paul and Gabriel Jorge Menezes and Avram Đorđević and Shiyang Li and Yifan Zhou and Bin Fu and Wenlong Zhang and Junjun He and Qiao Yu and Yihao Liu and Jinbo Xing and Xi Chen},
+  year={2026}
+}</code></pre>
+    </footer>
+
+    <dialog class="image-dialog" aria-labelledby="dialog-caption">
+      <button class="dialog-close" type="button" aria-label="Close enlarged figure">Close</button>
+      <div class="dialog-image-wrap">
+        <img src="static/img/hero-teaser-spring.png" width="1254" height="1254" alt="">
+      </div>
+      <p id="dialog-caption"></p>
+    </dialog>
+  </body>
+</html>
