@@ -207,14 +207,14 @@
           The main evaluation samples <b>K=50</b> independent rollouts per scenario and system. A scene passes the outcome-readout gate when at least 20 of 50 rollouts yield readable, in-schema outcomes. Scene Pass Rate (SPR) is the percentage of all 25 scenes in the corresponding track that pass this gate.
         </p>
 
-        <div class="table-intro full-width-table" id="main-results-note">
+        <div class="table-intro" id="main-results-note">
           <p>
             <strong>Main PAWBench results.</strong> PAW-Calibration reports conditional TVD ×100 (lower is better); a 70/30 model distribution against a 50/50 reference scores 20, while an exact match scores 0. PAW-Coverage reports conditional valid-support recovery percentage (higher is better). Avg. is computed over passing scenes; SPR is the percentage of all 25 scenes that pass. N/A means no scene in that mechanism group passes the gate.
           </p>
           <p class="swipe-hint">Swipe horizontally to compare all metrics.</p>
         </div>
 
-        <div class="table-container full-width-table" role="region" aria-labelledby="main-results-title" aria-describedby="main-results-note" tabindex="0">
+        <div class="table-container" role="region" aria-labelledby="main-results-title" aria-describedby="main-results-note" tabindex="0">
           <table class="data-table">
             <caption id="main-results-title">Main PAWBench results for eleven video generation models.</caption>
             <thead>

@@ -691,12 +691,6 @@ figcaption {
   border-right: 4px solid var(--warm);
 }
 
-.full-width-table {
-  width: min(100vw - 24px, 1280px);
-  margin-left: 50%;
-  transform: translateX(-50%);
-}
-
 .data-table {
   width: 100%;
   min-width: 980px;
