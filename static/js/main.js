@@ -122,18 +122,27 @@
         width: "1229",
         height: "360",
         alt: "Paper evidence figure: PAWEval maps repeated rollouts to terminal outcome distributions."
-      }
-    ],
-    diagnostics: [
+      },
       {
         kind: "Controlled diagnostic",
-        title: "Causal and non-causal interventions",
-        caption: "Two representative K=50 pairs; bars are P(outcome | valid readout), invalid readouts are excluded, and no pooled score is implied.",
+        title: "Causal and non-causal controls",
+        caption: "Models underreact to physically causal interventions and overreact to non-causal cues; bars are conditional on valid readouts.",
         src: "static/img/causal_noncausal_interventions.png",
         width: "2115",
         height: "639",
-        alt: "Controlled diagnostic figure with representative causal and non-causal K=50 intervention pairs."
+        alt: "Controlled diagnostic with paired causal and non-causal interventions."
       },
+      {
+        kind: "Evaluation robustness",
+        title: "Rollout-budget sensitivity",
+        caption: "Larger rollout budgets increase coverage for some models but leave calibration largely unchanged.",
+        src: "static/img/rollout_budget_diagnostics.png",
+        width: "2964",
+        height: "1012",
+        alt: "Conditional TVD and coverage as rollout budget increases from one to one hundred."
+      }
+    ],
+    alignment: [
       {
         kind: "Paper evidence",
         title: "Explicit target realization",

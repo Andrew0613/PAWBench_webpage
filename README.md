@@ -17,9 +17,10 @@ Then open <http://localhost:8000/>.
 ## Content and asset provenance
 
 - Text is adapted from the current PAWBench manuscript in `/mnt/shared-storage-user/puyuandong/glv/pawbench-overleaf`.
-- The main results table is sourced from `table/main_results.tex` in that manuscript checkout.
+- The evaluation and intervention tables are sourced from `table/main_results.tex`, `table/vlm_future_prediction.tex`, `table/target_prompt_results.tex`, `table/c2c_sampling_results.tex`, and `table/training_distribution_summary.tex` in that manuscript checkout.
 - `static/img/hero-teaser-spring.png` is the current user-selected PAWBench teaser and social preview image.
 - `static/img/scenario_taxonomy.png` is a crop-box-faithful PNG export of the manuscript's current Figure 2 (`figure/rendered/scenario_taxonomy.pdf`).
+- `static/img/rollout_budget_diagnostics.png` is the manuscript's current rollout-budget robustness figure.
 - The remaining figures are PAWBench manuscript figures already present in this target site.
 
 The compact arXiv, PDF, Code, and Benchmark resource controls remain disabled until their public URLs are authorized.

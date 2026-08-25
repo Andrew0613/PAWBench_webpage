@@ -31,10 +31,10 @@
       <a class="nav-link" href="#motivation">Motivation</a>
       <a class="nav-link" href="#benchmark">PAWBench</a>
       <a class="nav-link" href="#paweval">PAWEval</a>
-      <a class="nav-link" href="#experiments">Results</a>
-      <a class="nav-link" href="#diagnostics">Diagnostics</a>
+      <a class="nav-link" href="#experiments">Evaluation</a>
+      <a class="nav-link" href="#alignment-interventions">Alignment</a>
       <a class="nav-link" href="#visual-evidence">Visual evidence</a>
-      <a class="nav-link" href="#human-study">Alignment</a>
+      <a class="nav-link" href="#conclusion">Conclusion</a>
     </nav>
 
     <div class="header-wrapper">
@@ -142,10 +142,10 @@
         <a href="#motivation" class="icon-link"><span class="icon">01</span> Motivation</a>
         <a href="#benchmark" class="icon-link"><span class="icon">02</span> PAWBench</a>
         <a href="#paweval" class="icon-link"><span class="icon">03</span> PAWEval</a>
-        <a href="#experiments" class="icon-link"><span class="icon">04</span> Results</a>
-        <a href="#diagnostics" class="icon-link"><span class="icon">05</span> Diagnostics</a>
+        <a href="#experiments" class="icon-link"><span class="icon">04</span> Evaluation</a>
+        <a href="#alignment-interventions" class="icon-link"><span class="icon">05</span> Alignment</a>
         <a href="#visual-evidence" class="icon-link"><span class="icon">06</span> Visual evidence</a>
-        <a href="#human-study" class="icon-link"><span class="icon">07</span> Alignment</a>
+        <a href="#conclusion" class="icon-link"><span class="icon">07</span> Conclusion</a>
       </nav>
 
       <p class="click-hint"><strong>Click to jump to each section.</strong></p>
@@ -201,96 +201,246 @@
         </figure>
       </section>
 
-      <section id="experiments" class="sub-section">
-        <h1 class="text">State-of-the-Art Model Performance on PAWBench</h1>
-        <p class="text">
-          The main evaluation samples <b>K=50</b> independent rollouts per scenario and system. A scene passes the outcome-readout gate when at least 20 of 50 rollouts yield readable, in-schema outcomes. Scene Pass Rate (SPR) is the percentage of all 25 scenes in the corresponding track that pass this gate.
-        </p>
+      <section id="experiments" class="sub-section paper-section">
+        <p class="section-kicker">Section 4</p>
+        <h1 class="text">Evaluation on PAWBench</h1>
 
-        <div class="table-intro" id="main-results-note">
-          <p>
-            <strong>Main PAWBench results.</strong> PAW-Calibration reports conditional TVD ×100 (lower is better); a 70/30 model distribution against a 50/50 reference scores 20, while an exact match scores 0. PAW-Coverage reports conditional valid-support recovery percentage (higher is better). Avg. is computed over passing scenes; SPR is the percentage of all 25 scenes that pass. N/A means no scene in that mechanism group passes the gate.
+        <section class="paper-subsection" aria-labelledby="evaluation-setup-title">
+          <h2 id="evaluation-setup-title">Evaluation Setup</h2>
+          <p class="text">
+            We evaluate eleven current video generation models on both PAW-Calibration and PAW-Coverage. Every system receives the same source image and action prompt, with <b>K=50</b> independent rollouts per scenario. A scene passes the outcome-readout gate when at least 20 of 50 rollouts yield readable, in-schema outcomes; Scene Pass Rate (SPR) is the percentage of all 25 scenes in a track that pass this gate.
           </p>
-          <p class="swipe-hint">Swipe horizontally to compare all metrics.</p>
-        </div>
+        </section>
 
-        <div class="table-container" role="region" aria-labelledby="main-results-title" aria-describedby="main-results-note" tabindex="0">
-          <table class="data-table">
-            <caption id="main-results-title">Main PAWBench results for eleven video generation models.</caption>
-            <thead>
-              <tr>
-                <th scope="col" rowspan="2">Model</th>
-                <th scope="colgroup" colspan="6" class="tb-hdr">PAW-Calibration: conditional TVD ×100 ↓</th>
-                <th scope="colgroup" colspan="6" class="tb-hdr">PAW-Coverage: conditional Coverage % ↑</th>
-              </tr>
-              <tr>
-                <th scope="col">Avg.</th>
-                <th scope="col">SPR</th>
-                <th scope="col">Toss</th>
-                <th scope="col">Rot.</th>
-                <th scope="col">Rout.</th>
-                <th scope="col">Draw</th>
-                <th scope="col">Avg.</th>
-                <th scope="col">SPR</th>
-                <th scope="col">Coll.</th>
-                <th scope="col">Stab.</th>
-                <th scope="col">Agent</th>
-                <th scope="col">Mat.</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><th scope="row">HappyHorse</th><td>43.1</td><td>92.0%</td><td>40.1</td><td>27.5</td><td>41.9</td><td>59.5</td><td>47.1</td><td>100.0%</td><td>45.0</td><td>36.8</td><td>49.0</td><td>58.3</td></tr>
-              <tr><th scope="row">Veo3.1 Fast</th><td>35.4</td><td>88.0%</td><td>37.1</td><td>12.2</td><td>32.4</td><td>55.0</td><td>41.8</td><td>100.0%</td><td>39.8</td><td>21.1</td><td>53.3</td><td>44.2</td></tr>
-              <tr><th scope="row">Kling 3 Std.</th><td>34.9</td><td>92.0%</td><td>29.9</td><td>20.3</td><td>38.7</td><td>46.0</td><td>52.8</td><td>88.0%</td><td>52.7</td><td>40.0</td><td>44.3</td><td>77.5</td></tr>
-              <tr><th scope="row">Seedance 2</th><td>30.5</td><td>100.0%</td><td>32.7</td><td>15.1</td><td>31.1</td><td>40.5</td><td>50.9</td><td>84.0%</td><td>48.6</td><td>50.0</td><td>44.3</td><td>67.5</td></tr>
-              <tr><th scope="row">Wan2.7</th><td>26.3</td><td>92.0%</td><td>26.0</td><td>12.2</td><td>26.8</td><td>36.5</td><td>50.0</td><td>96.0%</td><td>60.3</td><td>50.5</td><td>37.9</td><td>53.3</td></tr>
-              <tr class="table-divider"><td colspan="13"></td></tr>
-              <tr><th scope="row">Wan2.2</th><td>26.3</td><td>64.0%</td><td>22.4</td><td>15.8</td><td class="cell-second">23.2</td><td>45.9</td><td class="cell-second">63.4</td><td>92.0%</td><td class="cell-second">76.8</td><td class="cell-second">56.7</td><td>55.0</td><td>58.3</td></tr>
-              <tr><th scope="row">LTX-2.3</th><td>30.1</td><td>24.0%</td><td>29.3</td><td class="cell-second">11.0</td><td>N/A</td><td>41.0</td><td class="cell-best">71.7</td><td>72.0%</td><td class="cell-best">82.7</td><td>50.0</td><td class="cell-best">59.5</td><td class="cell-best">90.0</td></tr>
-              <tr><th scope="row">LTX-2.5</th><td>30.2</td><td>60.0%</td><td>30.2</td><td>17.1</td><td>39.9</td><td class="cell-second">27.1</td><td>57.4</td><td>88.0%</td><td>66.7</td><td>30.0</td><td class="cell-second">59.4</td><td>57.5</td></tr>
-              <tr><th scope="row">Cosmos 3 Super I2V</th><td class="cell-best">20.5</td><td>80.0%</td><td class="cell-best">19.4</td><td class="cell-best">3.6</td><td class="cell-best">17.7</td><td>35.5</td><td>55.2</td><td>92.0%</td><td>56.7</td><td>31.7</td><td>49.4</td><td class="cell-second">81.7</td></tr>
-              <tr><th scope="row">LingBot-Video-MoE</th><td>41.8</td><td>72.0%</td><td>31.8</td><td>13.4</td><td>44.4</td><td>60.8</td><td>58.8</td><td>100.0%</td><td>62.2</td><td class="cell-best">61.8</td><td>46.5</td><td>72.5</td></tr>
-              <tr><th scope="row">MiniMax H3</th><td class="cell-second">24.2</td><td>68.0%</td><td class="cell-second">22.0</td><td>14.0</td><td>28.9</td><td class="cell-best">26.5</td><td>48.7</td><td>92.0%</td><td>59.5</td><td>39.5</td><td>36.4</td><td>58.3</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <section class="paper-subsection" aria-labelledby="benchmark-results-title">
+          <h2 id="benchmark-results-title">Benchmark Results</h2>
+          <div class="table-intro" id="main-results-note">
+            <p>
+              <strong>Table 1: Main PAWBench results.</strong> PAW-Calibration reports conditional TVD ×100 (lower is better); a 70/30 model distribution against a 50/50 reference scores 20, while an exact match scores 0. PAW-Coverage reports conditional valid-support recovery percentage (higher is better). Avg. is computed over passing scenes; SPR is the percentage of all 25 scenes that pass. N/A means no scene in that mechanism group passes the gate.
+            </p>
+            <p class="swipe-hint">Swipe horizontally to compare all metrics.</p>
+          </div>
 
-        <p class="text">
-          No model combines well-aligned probability mass, broad support recovery, and reliable performance across scenes. Cosmos 3 Super I2V has the lowest conditional Calibration TVD, while LTX-2.3 has the highest conditional Coverage average, but their SPR values show different scene-level reliability limits.
-        </p>
+          <div class="table-container" role="region" aria-labelledby="main-results-caption" aria-describedby="main-results-note" tabindex="0">
+            <table class="data-table">
+              <caption id="main-results-caption">Main PAWBench results for eleven video generation models.</caption>
+              <thead>
+                <tr>
+                  <th scope="col" rowspan="2">Model</th>
+                  <th scope="colgroup" colspan="6" class="tb-hdr">PAW-Calibration: conditional TVD ×100 ↓</th>
+                  <th scope="colgroup" colspan="6" class="tb-hdr">PAW-Coverage: conditional Coverage % ↑</th>
+                </tr>
+                <tr>
+                  <th scope="col">Avg.</th><th scope="col">SPR</th><th scope="col">Toss</th><th scope="col">Rot.</th><th scope="col">Rout.</th><th scope="col">Draw</th>
+                  <th scope="col">Avg.</th><th scope="col">SPR</th><th scope="col">Coll.</th><th scope="col">Stab.</th><th scope="col">Agent</th><th scope="col">Mat.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">HappyHorse</th><td>43.1</td><td>92.0%</td><td>40.1</td><td>27.5</td><td>41.9</td><td>59.5</td><td>47.1</td><td>100.0%</td><td>45.0</td><td>36.8</td><td>49.0</td><td>58.3</td></tr>
+                <tr><th scope="row">Veo3.1 Fast</th><td>35.4</td><td>88.0%</td><td>37.1</td><td>12.2</td><td>32.4</td><td>55.0</td><td>41.8</td><td>100.0%</td><td>39.8</td><td>21.1</td><td>53.3</td><td>44.2</td></tr>
+                <tr><th scope="row">Kling 3 Std.</th><td>34.9</td><td>92.0%</td><td>29.9</td><td>20.3</td><td>38.7</td><td>46.0</td><td>52.8</td><td>88.0%</td><td>52.7</td><td>40.0</td><td>44.3</td><td>77.5</td></tr>
+                <tr><th scope="row">Seedance 2</th><td>30.5</td><td>100.0%</td><td>32.7</td><td>15.1</td><td>31.1</td><td>40.5</td><td>50.9</td><td>84.0%</td><td>48.6</td><td>50.0</td><td>44.3</td><td>67.5</td></tr>
+                <tr><th scope="row">Wan2.7</th><td>26.3</td><td>92.0%</td><td>26.0</td><td>12.2</td><td>26.8</td><td>36.5</td><td>50.0</td><td>96.0%</td><td>60.3</td><td>50.5</td><td>37.9</td><td>53.3</td></tr>
+                <tr class="table-divider"><td colspan="13"></td></tr>
+                <tr><th scope="row">Wan2.2</th><td>26.3</td><td>64.0%</td><td>22.4</td><td>15.8</td><td class="cell-second">23.2</td><td>45.9</td><td class="cell-second">63.4</td><td>92.0%</td><td class="cell-second">76.8</td><td class="cell-second">56.7</td><td>55.0</td><td>58.3</td></tr>
+                <tr><th scope="row">LTX-2.3</th><td>30.1</td><td>24.0%</td><td>29.3</td><td class="cell-second">11.0</td><td>N/A</td><td>41.0</td><td class="cell-best">71.7</td><td>72.0%</td><td class="cell-best">82.7</td><td>50.0</td><td class="cell-best">59.5</td><td class="cell-best">90.0</td></tr>
+                <tr><th scope="row">LTX-2.5</th><td>30.2</td><td>60.0%</td><td>30.2</td><td>17.1</td><td>39.9</td><td class="cell-second">27.1</td><td>57.4</td><td>88.0%</td><td>66.7</td><td>30.0</td><td class="cell-second">59.4</td><td>57.5</td></tr>
+                <tr><th scope="row">Cosmos 3 Super I2V</th><td class="cell-best">20.5</td><td>80.0%</td><td class="cell-best">19.4</td><td class="cell-best">3.6</td><td class="cell-best">17.7</td><td>35.5</td><td>55.2</td><td>92.0%</td><td>56.7</td><td>31.7</td><td>49.4</td><td class="cell-second">81.7</td></tr>
+                <tr><th scope="row">LingBot-Video-MoE</th><td>41.8</td><td>72.0%</td><td>31.8</td><td>13.4</td><td>44.4</td><td>60.8</td><td>58.8</td><td>100.0%</td><td>62.2</td><td class="cell-best">61.8</td><td>46.5</td><td>72.5</td></tr>
+                <tr><th scope="row">MiniMax H3</th><td class="cell-second">24.2</td><td>68.0%</td><td class="cell-second">22.0</td><td>14.0</td><td>28.9</td><td class="cell-best">26.5</td><td>48.7</td><td>92.0%</td><td>59.5</td><td>39.5</td><td>36.4</td><td>58.3</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="text">
+            No model combines well-aligned probability mass, broad support recovery, and reliable performance across scenes. Cosmos 3 Super I2V has the lowest conditional Calibration TVD but passes 80.0% of Calibration scenes; LTX-2.3 has the highest conditional Coverage average, computed over the 72.0% of Coverage scenes that pass. Conditional scores and scene-level reliability must therefore be read together.
+          </p>
+          <p class="text">
+            Recovering valid futures is not the same as assigning them the right probability. PAW-Coverage and PAW-Calibration expose complementary failures: a model can reveal many plausible outcomes while allocating probability mass incorrectly, or match observed frequencies while leaving valid alternatives unseen.
+          </p>
+        </section>
+
+        <section class="paper-subsection" aria-labelledby="causal-controls-title">
+          <h2 id="causal-controls-title">Causal and Non-Causal Controls</h2>
+          <p class="text">
+            A probabilistic world model should change its future distribution only when the physical transition changes. We therefore pair physically causal interventions, which alter the transition and reference distribution, with non-causal interventions that change only an irrelevant visual or textual cue.
+          </p>
+          <figure>
+            <button class="figure-button" type="button" data-zoom-src="static/img/causal_noncausal_interventions.png" data-zoom-caption="Models underreact to physically causal interventions and overreact to non-causal cues." aria-label="Enlarge causal and non-causal control figure">
+              <img data-zoomable draggable="false" src="static/img/causal_noncausal_interventions.png" width="2115" height="639" alt="Paired causal pencil-tilt and non-causal Galton-board text interventions with before-and-after outcome distributions." loading="lazy">
+            </button>
+            <figcaption>
+              <strong>Figure 4: Models underreact to physically causal interventions and overreact to non-causal cues.</strong> Upper and lower bars show outcome distributions before and after intervention; the pencil tilt changes the physical transition, while the Galton-board text leaves it unchanged. Bars are conditional on valid readouts, and this figure is diagnostic rather than a pooled benchmark score.
+            </figcaption>
+          </figure>
+          <p class="text">
+            Model distributions shift incompletely or in the wrong direction under physically causal changes, while irrelevant text can redirect probability mass despite an unchanged reference distribution. The models respond to altered inputs, but not reliably according to whether the underlying physical transition changed.
+          </p>
+        </section>
+
+        <section class="paper-subsection" aria-labelledby="evaluation-robustness-title">
+          <h2 id="evaluation-robustness-title">Robustness of the Evaluation Protocol</h2>
+          <p class="text">
+            We test two measurement explanations for the observed gap: whether the rollout budget is too small, and whether PAWEval disagrees with humans on clear terminal outcomes.
+          </p>
+          <figure>
+            <button class="figure-button" type="button" data-zoom-src="static/img/rollout_budget_diagnostics.png" data-zoom-caption="Larger rollout budgets increase coverage but leave calibration largely unchanged." aria-label="Enlarge rollout-budget sensitivity figure">
+              <img data-zoomable draggable="false" src="static/img/rollout_budget_diagnostics.png" width="2964" height="1012" alt="Conditional TVD and valid-support coverage as rollout budget increases from K equals 1 to 100." loading="lazy">
+            </button>
+            <figcaption>
+              <strong>Figure 5: Larger rollout budgets increase coverage but leave calibration largely unchanged.</strong> Conditional TVD and valid-support coverage are shown as the rollout budget grows from K=1 to K=100. K=50 is a shared evaluation budget, not a claimed convergence point.
+            </figcaption>
+          </figure>
+          <p class="text">
+            Doubling the rollout budget leaves calibration largely unchanged, although coverage continues to rise for three of four models. Across eleven generators, observed TVD averages 31.2; in a matched finite-sample null that preserves passing scenes and readable counts, 99% of simulated averages remain below 9.22.
+          </p>
+
+          <h3>Agreement with Human Judgments</h3>
+          <p class="text">
+            Seven independent human judgments use the same scene-specific outcome space. The comparison below includes only videos where PAWEval and the human panel both provide a clear terminal-outcome label.
+          </p>
+          <div class="table-container human-table" role="region" aria-labelledby="human-results-title" aria-describedby="human-results-boundary" tabindex="0">
+            <table class="data-table">
+              <caption id="human-results-title">PAWEval-human agreement on clear comparable videos.</caption>
+              <thead><tr><th scope="col">Human-consensus subset</th><th scope="col">Videos</th><th scope="col">Exact matches</th><th scope="col">Agreement</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Overall</th><td>888</td><td>722</td><td>81.3%</td></tr>
+                <tr><th scope="row">Low consensus (3-4 votes)</th><td>213</td><td>125</td><td>58.7%</td></tr>
+                <tr><th scope="row">Moderate consensus (5 votes)</th><td>154</td><td>119</td><td>77.3%</td></tr>
+                <tr><th scope="row">High consensus (6-7 votes)</th><td>521</td><td>478</td><td>91.7%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text evidence-note" id="human-results-boundary">
+            The headline relation is 722/888 = 81.3% exact canonical-label agreement on clear comparable videos. It is not all-row accuracy and does not validate TVD, Coverage, or model rankings.
+          </p>
+        </section>
       </section>
 
-      <section id="diagnostics" class="sub-section">
-        <h1 class="text">Distribution-Shaping Interventions and Controlled Diagnostics</h1>
+      <section id="alignment-interventions" class="sub-section paper-section">
+        <p class="section-kicker">Section 5</p>
+        <h1 class="text">Toward Probabilistically Aligned World Modeling</h1>
         <p class="text">
-          PAWBench tests whether language conditioning, initial-noise sampling, or model training can reshape predictive distributions. Language can request individual futures, coupled noise can broaden finite-budget exploration, and fine-tuning can shift outcome frequencies; none reliably recovers the scene-conditioned distribution across different physical states.
+          Generating one plausible future, or controlling one requested future, does not amount to controlling a distribution of futures. We intervene at three distinct interfaces that can shape this distribution: language specifies a requested future, initial noise selects among futures, and learning determines how the model allocates probability mass.
         </p>
 
-        <figure>
-          <button class="figure-button" type="button" data-zoom-src="static/img/causal_noncausal_interventions.png" data-zoom-caption="Representative causal and non-causal K=50 intervention pairs used as diagnostics, not as benchmark scores." aria-label="Enlarge causal intervention diagnostic">
-            <img data-zoomable draggable="false" src="static/img/causal_noncausal_interventions.png" width="2115" height="639" alt="Representative causal and non-causal paper diagnostic pairs showing that model distributions may shift for irrelevant cues or fail to shift for causal changes." loading="lazy">
-          </button>
-          <figcaption>
-            <strong>Figure 4:</strong> Two representative K=50 causal/non-causal pairs. Bars report P(outcome | valid readout): invalid readouts are excluded, there is no pooled score, and the figure is diagnostic only.
-          </figcaption>
-        </figure>
+        <section class="paper-subsection" aria-labelledby="language-steering-title">
+          <h2 id="language-steering-title">Predicting and Steering Outcome Distributions via Language</h2>
+          <p class="text">
+            We separate future selection from video realization. Direct VLM sampling measures which outcomes a language controller selects; prompt engineering tests selection followed by generation; Oracle PE supplies target outcomes directly to isolate whether the generator realizes the requested future.
+          </p>
+          <p class="swipe-hint">Swipe horizontally to compare all metrics.</p>
+          <div class="table-container" role="region" aria-labelledby="vlm-results-title" tabindex="0">
+            <table class="data-table">
+              <caption id="vlm-results-title"><strong>Table 2: VLM distributions over possible futures.</strong> Repeated responses are mapped to PAWBench outcomes without video generation.</caption>
+              <thead>
+                <tr><th scope="col" rowspan="2">Model</th><th scope="colgroup" colspan="6" class="tb-hdr">PAW-Calibration: TVD ×100 ↓</th><th scope="colgroup" colspan="6" class="tb-hdr">PAW-Coverage: Coverage % ↑</th></tr>
+                <tr><th scope="col">Avg.</th><th scope="col">SPR</th><th scope="col">Toss</th><th scope="col">Rot.</th><th scope="col">Rout.</th><th scope="col">Draw</th><th scope="col">Avg.</th><th scope="col">SPR</th><th scope="col">Coll.</th><th scope="col">Stab.</th><th scope="col">Agent</th><th scope="col">Mat.</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Qwen3.5 Plus</th><td>40.9</td><td>84.0%</td><td>36.4</td><td class="cell-best">15.1</td><td>44.9</td><td>59.0</td><td>35.9</td><td>96.0%</td><td>19.8</td><td>49.5</td><td class="cell-second">48.6</td><td>29.2</td></tr>
+                <tr><th scope="row">GPT-5.5</th><td>42.3</td><td>100.0%</td><td>35.6</td><td>42.9</td><td>41.9</td><td>56.0</td><td>34.3</td><td>100.0%</td><td>24.9</td><td>29.6</td><td>44.7</td><td class="cell-second">39.2</td></tr>
+                <tr><th scope="row">GLM-5V Turbo</th><td class="cell-best">34.8</td><td>88.0%</td><td class="cell-best">24.1</td><td>36.9</td><td class="cell-best">33.9</td><td class="cell-best">50.8</td><td>39.9</td><td>100.0%</td><td>30.9</td><td class="cell-best">56.6</td><td>42.3</td><td>38.3</td></tr>
+                <tr><th scope="row">Kimi K2.6</th><td class="cell-second">38.2</td><td>96.0%</td><td class="cell-second">32.6</td><td>32.1</td><td class="cell-second">36.8</td><td>58.5</td><td class="cell-second">45.1</td><td>100.0%</td><td class="cell-second">44.1</td><td class="cell-second">55.7</td><td>46.5</td><td>34.2</td></tr>
+                <tr><th scope="row">Gemini 3.5 Flash</th><td>39.4</td><td>100.0%</td><td>37.0</td><td class="cell-second">29.0</td><td>40.6</td><td class="cell-second">52.0</td><td class="cell-best">46.6</td><td>96.0%</td><td class="cell-best">49.5</td><td>39.5</td><td class="cell-best">48.9</td><td class="cell-best">43.3</td></tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div class="diagnostic-grid">
-          <article>
-            <h2>Language steering</h2>
-            <p>Prompt engineering and oracle target prompts separate future selection from video realization. Even explicit targets are realized only 37.6-58.1% of the time.</p>
-            <img src="static/img/explicit_target_realization.png" width="753" height="443" alt="Paper figure showing explicit target realization rates across video generators." loading="lazy">
-          </article>
-          <article>
-            <h2>Training distribution</h2>
-            <p>LoRA training mixtures shift left/right pencil outcomes, but the same global adjustment helps one initial state while worsening another.</p>
-            <img src="static/img/training_mass_response.png" width="837" height="444" alt="Paper figure showing generated left-fall frequency as training left-fall share increases." loading="lazy">
-          </article>
-        </div>
+          <p class="swipe-hint">Swipe horizontally to compare all metrics.</p>
+          <div class="table-container" role="region" aria-labelledby="target-prompt-results-title" tabindex="0">
+            <table class="data-table">
+              <caption id="target-prompt-results-title"><strong>Table 3: Predicted outcomes do not substitute for target outcomes.</strong> The first row scores GPT-5.5 PE selections before synthesis; matched Base, PE, and Oracle PE conditions cover 25 scenes per track at K=50.</caption>
+              <thead>
+                <tr><th scope="col" rowspan="2">Model / condition</th><th scope="colgroup" colspan="6" class="tb-hdr">PAW-Calibration: TVD ×100 ↓</th><th scope="colgroup" colspan="6" class="tb-hdr">PAW-Coverage: Coverage % ↑</th></tr>
+                <tr><th scope="col">Avg.</th><th scope="col">SPR</th><th scope="col">Toss</th><th scope="col">Rot.</th><th scope="col">Rout.</th><th scope="col">Draw</th><th scope="col">Avg.</th><th scope="col">SPR</th><th scope="col">Coll.</th><th scope="col">Stab.</th><th scope="col">Agent</th><th scope="col">Mat.</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">GPT-5.5 PE</th><td>44.3</td><td>100.0%</td><td>40.1</td><td>49.5</td><td>43.6</td><td>49.0</td><td>35.0</td><td>100.0%</td><td>35.4</td><td>34.6</td><td>35.5</td><td>33.3</td></tr>
+                <tr class="table-group-start"><th scope="row">Wan2.2</th><td>26.3</td><td>64.0%</td><td>22.4</td><td>15.8</td><td>23.2</td><td>45.9</td><td>63.4</td><td>92.0%</td><td>76.8</td><td>56.7</td><td>55.0</td><td>58.3</td></tr>
+                <tr><th scope="row"><span class="condition-offset">+PE</span></th><td>27.1</td><td>92.0%</td><td>23.5</td><td>15.4</td><td>28.8</td><td>39.5</td><td>61.9</td><td>100.0%</td><td>68.1</td><td>50.7</td><td>62.9</td><td>57.5</td></tr>
+                <tr><th scope="row"><span class="condition-offset">+Oracle PE</span></th><td>15.3</td><td>84.0%</td><td class="cell-best">10.5</td><td>13.9</td><td>14.0</td><td>27.3</td><td>76.2</td><td>96.0%</td><td>71.1</td><td>72.7</td><td>82.8</td><td>76.7</td></tr>
+                <tr class="table-group-start"><th scope="row">Cosmos 3 Super I2V</th><td>20.5</td><td>80.0%</td><td>19.4</td><td class="cell-best">3.6</td><td>17.7</td><td>35.5</td><td>55.2</td><td>92.0%</td><td>56.7</td><td>31.7</td><td>49.4</td><td class="cell-best">81.7</td></tr>
+                <tr><th scope="row"><span class="condition-offset">+PE</span></th><td>31.6</td><td>92.0%</td><td>27.0</td><td>15.0</td><td>34.9</td><td>47.0</td><td>64.9</td><td>100.0%</td><td>71.1</td><td>62.0</td><td>53.5</td><td>76.7</td></tr>
+                <tr><th scope="row"><span class="condition-offset">+Oracle PE</span></th><td class="cell-second">12.8</td><td>88.0%</td><td class="cell-second">17.6</td><td>9.2</td><td class="cell-second">13.2</td><td class="cell-best">5.1</td><td class="cell-best">87.3</td><td>100.0%</td><td class="cell-best">84.8</td><td class="cell-best">91.4</td><td class="cell-best">91.3</td><td class="cell-second">80.8</td></tr>
+                <tr class="table-group-start"><th scope="row">MiniMax H3</th><td>24.2</td><td>68.0%</td><td>22.0</td><td>14.0</td><td>28.9</td><td>26.5</td><td>48.7</td><td>92.0%</td><td>59.5</td><td>39.5</td><td>36.4</td><td>58.3</td></tr>
+                <tr><th scope="row"><span class="condition-offset">+PE</span></th><td>38.9</td><td>96.0%</td><td>32.5</td><td>35.0</td><td>42.2</td><td>48.6</td><td>49.8</td><td>96.0%</td><td>59.3</td><td>41.8</td><td>40.5</td><td>57.5</td></tr>
+                <tr><th scope="row"><span class="condition-offset">+Oracle PE</span></th><td class="cell-best">10.8</td><td>96.0%</td><td>21.6</td><td class="cell-second">6.0</td><td class="cell-best">2.1</td><td>12.6</td><td class="cell-second">82.9</td><td>96.0%</td><td class="cell-second">82.4</td><td class="cell-best">91.4</td><td>82.1</td><td>76.7</td></tr>
+                <tr class="table-group-start"><th scope="row">LTX-2.5</th><td>30.2</td><td>60.0%</td><td>30.2</td><td>17.1</td><td>39.9</td><td>27.1</td><td>57.4</td><td>88.0%</td><td>66.7</td><td>30.0</td><td>59.4</td><td>57.5</td></tr>
+                <tr><th scope="row"><span class="condition-offset">+PE</span></th><td>36.4</td><td>96.0%</td><td>34.3</td><td>28.7</td><td>36.6</td><td>48.0</td><td>55.6</td><td>100.0%</td><td>59.8</td><td>42.1</td><td>51.4</td><td>68.3</td></tr>
+                <tr><th scope="row"><span class="condition-offset">+Oracle PE</span></th><td>18.0</td><td>88.0%</td><td>26.2</td><td>21.8</td><td>15.0</td><td class="cell-second">5.7</td><td>73.9</td><td>96.0%</td><td>56.0</td><td class="cell-second">78.0</td><td class="cell-second">89.9</td><td>73.3</td></tr>
+              </tbody>
+            </table>
+          </div>
 
-        <p class="text evidence-note">
-          Evidence boundaries: explicit target rate uses 2,500 planned rows per model and failures count as misses. The training plot is conditional on readable left/right outcomes with invalid readouts excluded.
-        </p>
+          <figure class="compact-paper-figure">
+            <button class="figure-button" type="button" data-zoom-src="static/img/explicit_target_realization.png" data-zoom-caption="Oracle prompt engineering often misses requested outcomes." aria-label="Enlarge explicit-target realization figure">
+              <img data-zoomable draggable="false" src="static/img/explicit_target_realization.png" width="753" height="443" alt="Target Outcome Following Rate for four video generators under explicit requested outcomes." loading="lazy">
+            </button>
+            <figcaption><strong>Figure 6: Oracle PE often misses requested outcomes.</strong> Across the complete 2,500-row target-declaring roster per model, invalid, missing, unreadable, malformed, and different outcomes count as non-following.</figcaption>
+          </figure>
+          <p class="text">
+            Direct VLM selections are already misaligned, and ordinary prompt engineering compounds selection error with missed realization. Oracle PE improves conditional TVD and Coverage for every generator, yet requested outcomes are realized only 37.6-58.1% of the time. Language changes individual rollouts without reliably aligning their distribution.
+          </p>
+        </section>
+
+        <section class="paper-subsection" aria-labelledby="noise-exploration-title">
+          <h2 id="noise-exploration-title">Broadening Outcome Exploration via Initial Noise</h2>
+          <p class="text">
+            Holding the action prompt, generator, and K=50 budget fixed, Couple to Control (C2C) introduces negative dependence among initial-noise samples while preserving each sample's standard Gaussian marginal. This tests finite-budget exploration rather than a change to the model's learned distribution.
+          </p>
+          <p class="swipe-hint">Swipe horizontally to compare all metrics.</p>
+          <div class="table-container" role="region" aria-labelledby="c2c-results-title" tabindex="0">
+            <table class="data-table">
+              <caption id="c2c-results-title"><strong>Table 4: Coupled noise broadens finite-gallery exploration.</strong> Base and C2C use matched prompts, generators, rollout budgets, and readout contracts.</caption>
+              <thead>
+                <tr><th scope="col" rowspan="2">Model / condition</th><th scope="colgroup" colspan="6" class="tb-hdr">PAW-Calibration: TVD ×100 ↓</th><th scope="colgroup" colspan="6" class="tb-hdr">PAW-Coverage: Coverage % ↑</th></tr>
+                <tr><th scope="col">Avg.</th><th scope="col">SPR</th><th scope="col">Toss</th><th scope="col">Rot.</th><th scope="col">Rout.</th><th scope="col">Draw</th><th scope="col">Avg.</th><th scope="col">SPR</th><th scope="col">Coll.</th><th scope="col">Stab.</th><th scope="col">Agent</th><th scope="col">Mat.</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Wan2.2</th><td>26.3</td><td>64.0%</td><td>22.4</td><td>15.8</td><td>23.2</td><td>45.9</td><td>63.4</td><td>92.0%</td><td>76.8</td><td>56.7</td><td>55.0</td><td>58.3</td></tr>
+                <tr><th scope="row"><span class="condition-offset">+C2C</span></th><td>25.7</td><td>84.0%</td><td class="cell-best">17.4</td><td>22.3</td><td>21.6</td><td>48.7</td><td>69.2</td><td>88.0%</td><td>82.4</td><td class="cell-second">57.5</td><td class="cell-second">59.4</td><td>68.3</td></tr>
+                <tr class="table-group-start"><th scope="row">LTX-2.3</th><td>30.1</td><td>24.0%</td><td>29.3</td><td>11.0</td><td>N/A</td><td>41.0</td><td class="cell-second">71.7</td><td>72.0%</td><td class="cell-second">82.7</td><td>50.0</td><td class="cell-best">59.5</td><td class="cell-best">90.0</td></tr>
+                <tr><th scope="row"><span class="condition-offset">+C2C</span></th><td class="cell-second">19.9</td><td>32.0%</td><td class="cell-second">18.6</td><td>7.2</td><td>34.0</td><td class="cell-second">27.7</td><td class="cell-best">74.8</td><td>72.0%</td><td class="cell-best">92.8</td><td class="cell-best">87.5</td><td>57.1</td><td>76.7</td></tr>
+                <tr class="table-group-start"><th scope="row">Cosmos 3 Super I2V</th><td>20.5</td><td>80.0%</td><td>19.4</td><td class="cell-best">3.6</td><td class="cell-second">17.7</td><td>35.5</td><td>55.2</td><td>92.0%</td><td>56.7</td><td>31.7</td><td>49.4</td><td class="cell-second">81.7</td></tr>
+                <tr><th scope="row"><span class="condition-offset">+C2C</span></th><td class="cell-best">19.4</td><td>72.0%</td><td>25.8</td><td class="cell-second">6.1</td><td class="cell-best">14.3</td><td class="cell-best">24.2</td><td>63.9</td><td>92.0%</td><td>74.9</td><td>56.7</td><td>49.1</td><td>76.7</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text">
+            Across scenes that pass in each condition, C2C lowers mean Calibration TVD and raises mean Coverage for all three generators, but does not consistently raise SPR. It broadens exploration of existing possibilities within 50 rollouts rather than changing the model's learned probability allocation.
+          </p>
+        </section>
+
+        <section class="paper-subsection" aria-labelledby="training-distribution-title">
+          <h2 id="training-distribution-title">Reshaping the Model's Intrinsic Distribution via Fine-Tuning</h2>
+          <p class="text">
+            Five Wan2.2 LoRA models are trained with different left/right pencil-fall mixtures while the recipe and budget remain fixed. Each model is evaluated on upright and left-leaning scenes with a direction-neutral prompt and K=50 rollouts.
+          </p>
+          <p class="swipe-hint">Swipe horizontally to compare all columns.</p>
+          <div class="table-container training-table" role="region" aria-labelledby="training-results-title" tabindex="0">
+            <table class="data-table">
+              <caption id="training-results-title"><strong>Table 5: Training mixtures reshape outcome mass.</strong> TVD ×100 for the Base model and five LoRA models trained on increasing proportions of left-fall examples.</caption>
+              <thead>
+                <tr><th scope="col" rowspan="2">Scene</th><th scope="col" rowspan="2">Reference L/R</th><th scope="col" rowspan="2">Base</th><th scope="colgroup" colspan="5" class="tb-hdr">LoRA training P(left) %</th></tr>
+                <tr><th scope="col">0</th><th scope="col">20</th><th scope="col">50</th><th scope="col">80</th><th scope="col">100</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Upright</th><td>50/50</td><td>17.3</td><td>50.0</td><td class="cell-best">17.6</td><td class="cell-second">23.5</td><td>48.0</td><td>50.0</td></tr>
+                <tr><th scope="row">Left-leaning</th><td>100/0</td><td>41.3</td><td>97.2</td><td>50.0</td><td class="cell-second">18.9</td><td class="cell-best">0.0</td><td class="cell-best">0.0</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <figure class="compact-paper-figure wide">
+            <button class="figure-button" type="button" data-zoom-src="static/img/training_mass_response.png" data-zoom-caption="Training steers outcome mass across scenes, but both scenes follow similar trends." aria-label="Enlarge training-mixture response figure">
+              <img data-zoomable draggable="false" src="static/img/training_mass_response.png" width="837" height="444" alt="Generated left-fall frequency for upright and left-leaning pencils as training left-fall share increases." loading="lazy">
+            </button>
+            <figcaption><strong>Figure 7: Training steers outcome mass across scenes.</strong> Frequencies are conditional on readable left/right outcomes; invalid readouts are excluded.</figcaption>
+          </figure>
+          <p class="text">
+            Training composition consistently shifts generated outcome mass, but the same global adjustment moves both scenes in the same direction. Mixtures that improve the left-leaning scene make the upright scene nearly always fall left. Probabilistic alignment requires learning how the future distribution changes with each initial physical state, not merely matching global outcome frequencies.
+          </p>
+        </section>
       </section>
 
       <section id="visual-evidence" class="sub-section">
@@ -303,7 +453,7 @@
           <div class="evidence-tabs" role="tablist" aria-label="Evidence categories">
             <button class="evidence-tab active" type="button" role="tab" id="evidence-tab-concept" aria-selected="true" aria-controls="evidence-panel" data-evidence-category="concept">Concept</button>
             <button class="evidence-tab" type="button" role="tab" id="evidence-tab-evaluation" aria-selected="false" aria-controls="evidence-panel" data-evidence-category="evaluation" tabindex="-1">Evaluation</button>
-            <button class="evidence-tab" type="button" role="tab" id="evidence-tab-diagnostics" aria-selected="false" aria-controls="evidence-panel" data-evidence-category="diagnostics" tabindex="-1">Diagnostics</button>
+            <button class="evidence-tab" type="button" role="tab" id="evidence-tab-alignment" aria-selected="false" aria-controls="evidence-panel" data-evidence-category="alignment" tabindex="-1">Alignment</button>
           </div>
 
           <div class="evidence-case-meta" aria-live="polite" aria-atomic="true">
@@ -320,44 +470,6 @@
             <button class="evidence-nav evidence-next" type="button" data-evidence-nav="next" aria-label="Next evidence case">&#8250;</button>
           </div>
         </section>
-      </section>
-
-      <section id="human-study" class="sub-section">
-        <h1 class="text">PAWEval / Outcome-Readout Alignment</h1>
-        <p class="text">
-          To test whether the observed PAWBench gap is merely a PAWEval outcome-readout artifact, the paper compares PAWEval with seven independent human judgments per video using the same scene-specific outcome space.
-        </p>
-
-        <div class="table-intro" id="human-results-note">
-          <p>
-            This table reports exact canonical-label agreement only when both PAWEval and the seven-vote human panel provide a clear physical outcome. It does <b>not</b> validate TVD, Coverage, or model rankings.
-          </p>
-          <p class="swipe-hint">Swipe horizontally to compare all columns.</p>
-        </div>
-
-        <div class="table-container human-table" role="region" aria-labelledby="human-results-title" aria-describedby="human-results-note" tabindex="0">
-          <table class="data-table">
-            <caption id="human-results-title">PAWEval-human agreement on comparable videos.</caption>
-            <thead>
-              <tr>
-                <th scope="col">Human-consensus subset</th>
-                <th scope="col">Videos</th>
-                <th scope="col">Exact matches</th>
-                <th scope="col">Agreement</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><th scope="row">Overall</th><td>888</td><td>722</td><td>81.3%</td></tr>
-              <tr><th scope="row">Low consensus (3-4 votes)</th><td>213</td><td>125</td><td>58.7%</td></tr>
-              <tr><th scope="row">Moderate consensus (5 votes)</th><td>154</td><td>119</td><td>77.3%</td></tr>
-              <tr><th scope="row">High consensus (6-7 votes)</th><td>521</td><td>478</td><td>91.7%</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <p class="text">
-          The headline number is <b>722/888 = 81.3%</b> clear comparable label agreement. It is not reported as all-row accuracy and does not validate ranking claims.
-        </p>
       </section>
 
       <section id="conclusion" class="sub-section">

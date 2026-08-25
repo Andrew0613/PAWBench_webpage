@@ -439,6 +439,19 @@ hr {
   margin: 0 auto 56px;
 }
 
+.paper-section {
+  margin-bottom: 72px;
+}
+
+.section-kicker {
+  margin: 0 0 6px;
+  color: #0b63ce;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .sub-section h1.text {
   margin-bottom: 16px;
   color: var(--teal-dark);
@@ -448,6 +461,33 @@ hr {
 
 .text {
   font-size: 18px;
+}
+
+.paper-subsection {
+  margin-top: 40px;
+}
+
+.paper-subsection > h2 {
+  margin-bottom: 12px;
+  color: var(--teal-dark);
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.paper-subsection > h3 {
+  margin: 32px 0 10px;
+  color: var(--teal-dark);
+  font-size: 21px;
+  line-height: 1.25;
+}
+
+.compact-paper-figure {
+  width: min(100%, 560px);
+  margin: 28px auto 20px;
+}
+
+.compact-paper-figure.wide {
+  width: min(100%, 760px);
 }
 
 figure {
@@ -688,7 +728,6 @@ figcaption {
   margin: 12px 0 24px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border-right: 4px solid var(--warm);
 }
 
 .data-table {
@@ -701,6 +740,10 @@ figcaption {
 
 .human-table .data-table {
   min-width: 560px;
+}
+
+.training-table .data-table {
+  min-width: 720px;
 }
 
 .table-intro {
@@ -768,6 +811,16 @@ figcaption {
 
 .data-table tbody tr:hover th:first-child {
   background: #f8fbfd;
+}
+
+.data-table .table-group-start > * {
+  border-top: 2px solid #c6d9e5;
+}
+
+.condition-offset {
+  display: inline-block;
+  padding-left: 12px;
+  font-weight: 600;
 }
 
 .tb-hdr {
