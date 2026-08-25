@@ -6,7 +6,7 @@
   --blue: #6ea9dc;
   --blue-soft: #e2f2fb;
   --blue-hover: #b9def4;
-  --paper: #f7f2df;
+  --paper: #ffffff;
   --warm: #fff1b8;
   --accent: #d97966;
   --hero-sky: #9fc8e2;
@@ -30,7 +30,7 @@ html {
 body {
   margin: 0;
   color: var(--ink);
-  background: #fffdf6;
+  background: #ffffff;
   font-family: Charter, Georgia, "Times New Roman", serif;
   font-size: 16px;
   line-height: 1.6;
@@ -76,7 +76,7 @@ a {
   top: 16px;
   left: 16px;
   padding: 8px 12px;
-  color: #fffdf6;
+  color: #ffffff;
   background: var(--teal-dark);
   transform: translateY(-160%);
 }
@@ -94,7 +94,7 @@ a {
   width: 100%;
   padding: 8px 16px;
   text-align: center;
-  background: rgba(247, 242, 223, 0.96);
+  background: rgba(255, 255, 255, 0.96);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(12px);
 }
@@ -248,7 +248,7 @@ p {
 }
 
 .button-container .button:hover:not(:disabled) {
-  color: #fffdf6;
+  color: #ffffff;
   background: #eab682;
   transform: translateY(-1px);
 }
@@ -292,7 +292,7 @@ main {
   max-width: 980px;
   margin: 0 auto;
   padding: 24px 16px 64px;
-  background: #fffdf6;
+  background: #ffffff;
 }
 
 .byline {
@@ -588,7 +588,7 @@ figcaption {
 .scenario-tab {
   padding: 8px 12px;
   color: var(--teal-dark);
-  background: #fffdf6;
+  background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 8px;
   font: inherit;
@@ -603,7 +603,7 @@ figcaption {
 }
 
 .scenario-tab.active {
-  color: #fffdf6;
+  color: #ffffff;
   background: var(--teal-dark);
 }
 
@@ -670,7 +670,7 @@ figcaption {
 .rollout-controls button {
   padding: 8px 12px;
   color: var(--teal-dark);
-  background: #fffdf6;
+  background: #ffffff;
   border: 1px solid rgba(22, 54, 83, 0.22);
   border-radius: 6px;
   font-family: ui-sans-serif, system-ui, sans-serif;
@@ -688,7 +688,7 @@ figcaption {
 
 .rollout-tab.active,
 .rollout-controls [data-rollout-play] {
-  color: #fffdf6;
+  color: #ffffff;
   background: var(--teal-dark);
 }
 
@@ -742,7 +742,7 @@ figcaption {
 .rollout-card {
   min-width: 0;
   overflow: hidden;
-  background: #fffdf6;
+  background: #ffffff;
   border: 1px solid rgba(22, 54, 83, 0.18);
   border-radius: 8px;
 }
@@ -867,7 +867,7 @@ figcaption {
   left: 0;
   z-index: 1;
   text-align: left;
-  background: #fffdf6;
+  background: #ffffff;
   box-shadow: 1px 0 0 #dce5e8;
 }
 
