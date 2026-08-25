@@ -710,7 +710,8 @@ figcaption {
 }
 
 .table-intro {
-  margin: 24px 0 0;
+  margin-top: 24px;
+  margin-bottom: 0;
   color: var(--ink-soft);
   font-size: 15px;
   line-height: 1.45;
