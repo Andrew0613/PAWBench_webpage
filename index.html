@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="PAWBench evaluates whether video generators recover the distribution of possible physical futures under the same initial observation and action.">
-    <meta name="theme-color" content="#f7f2df">
+    <meta name="theme-color" content="#9fc8e2">
     <link rel="canonical" href="https://andrew0613.github.io/PAWBench_webpage/">
 
     <meta property="og:type" content="website">
@@ -45,23 +45,56 @@
 
           <div class="icon-container">
             <div class="icon-item">
-              <span class="icon-mark" aria-hidden="true">P</span>
-              <div><strong>PAWBench</strong>: 50 repeated-rollout physical scenarios for testing distributional world modeling.</div>
+              <span class="icon-mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32" focusable="false">
+                  <circle cx="7" cy="16" r="3"></circle>
+                  <circle cx="25" cy="7" r="3"></circle>
+                  <circle cx="25" cy="16" r="3"></circle>
+                  <circle cx="25" cy="25" r="3"></circle>
+                  <path d="M10 16h5m0 0c5 0 4-9 7-9m-7 9h7m-7 0c5 0 4 9 7 9"></path>
+                </svg>
+              </span>
+              <div><strong>Benchmark &amp; protocol</strong>: formalizes probabilistic alignment with 50 scenarios across eight physical mechanism groups; PAWEval turns repeated rollouts into outcome distributions.</div>
             </div>
             <div class="icon-item">
-              <span class="icon-mark" aria-hidden="true">E</span>
-              <div><strong>PAWEval</strong>: an outcome-level rubric protocol that converts generated videos into empirical future distributions.</div>
+              <span class="icon-mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32" focusable="false">
+                  <path d="M5 27V15m7 12V9m7 18V18m7 9V5"></path>
+                  <path d="m5 10 7-4 7 7 8-9"></path>
+                </svg>
+              </span>
+              <div><strong>Model diagnosis</strong>: benchmarks eleven current video generators and shows that plausible rollouts can still miss valid futures or assign them the wrong probability mass; the gap persists beyond finite sampling and automated outcome readout.</div>
             </div>
             <div class="icon-item">
-              <span class="icon-mark" aria-hidden="true">D</span>
-              <div><strong>Diagnostics</strong>: controlled probes for language prompting, coupled noise, and training-distribution shifts.</div>
+              <span class="icon-mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32" focusable="false">
+                  <path d="M6 8h20M6 16h20M6 24h20"></path>
+                  <circle cx="12" cy="8" r="3"></circle>
+                  <circle cx="21" cy="16" r="3"></circle>
+                  <circle cx="15" cy="24" r="3"></circle>
+                </svg>
+              </span>
+              <div><strong>Distribution shaping</strong>: probes language guidance, initial-noise sampling, and fine-tuning to distinguish inference-time steering and exploration from changes to the learned predictive distribution.</div>
             </div>
           </div>
 
           <div class="button-container" role="group" aria-label="Project resources">
-            <button class="button" type="button" disabled>Paper <span>Coming soon</span></button>
-            <button class="button" type="button" disabled>Code <span>Coming soon</span></button>
-            <button class="button" type="button" disabled>Data <span>Coming soon</span></button>
+            <button class="button" type="button" disabled title="arXiv link coming soon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v6h5M10 14h6m-6 4h4"></path></svg>
+              <span>arXiv</span>
+            </button>
+            <button class="button" type="button" disabled title="PDF coming soon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v6h5M9.5 17v-4h1.25a1.25 1.25 0 0 1 0 2.5H9.5m4-2.5v4m0-4h1.25a2 2 0 0 1 0 4H13.5m4-4h2.5m-2.5 2H20"></path></svg>
+              <span>PDF</span>
+            </button>
+            <button class="button" type="button" disabled title="Code repository coming soon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 7-5 5 5 5m6-10 5 5-5 5m-2-13-2 16"></path></svg>
+              <span>Code</span>
+            </button>
+            <button class="button" type="button" disabled title="Benchmark data coming soon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5m-16 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"></path></svg>
+              <span>Benchmark</span>
+            </button>
           </div>
         </div>
         <div class="header-image">

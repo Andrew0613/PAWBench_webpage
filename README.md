@@ -22,7 +22,7 @@ Then open <http://localhost:8000/>.
 - The remaining figures are PAWBench manuscript figures already present in this target site.
 - The known flawed taxonomy raster is intentionally not used.
 
-Paper, Code, and Data buttons remain visibly marked **Coming soon** because no public URLs are authorized.
+The compact arXiv, PDF, Code, and Benchmark resource controls remain disabled until their public URLs are authorized.
 
 ## Files
 

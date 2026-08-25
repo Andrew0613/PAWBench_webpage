@@ -9,6 +9,10 @@
   --paper: #f7f2df;
   --warm: #fff1b8;
   --accent: #d97966;
+  --hero-sky: #9fc8e2;
+  --hero-light: #d9ebf5;
+  --hero-mid: #b8d8eb;
+  --hero-deep: #6ea6ce;
   --best: #f4d6d2;
   --second: #dcecf7;
   --line: rgba(31, 47, 52, 0.18);
@@ -111,7 +115,21 @@ a {
 }
 
 .header-wrapper {
-  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(244, 250, 253, 0.58) 0 11%, transparent 34%),
+    linear-gradient(108deg, var(--hero-light) 0%, var(--hero-mid) 48%, var(--hero-deep) 100%);
+}
+
+.header-wrapper::before {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.2), transparent 42%),
+    repeating-linear-gradient(0deg, rgba(22, 54, 83, 0.025) 0 1px, transparent 1px 5px);
+  content: "";
+  pointer-events: none;
 }
 
 .header-container {
@@ -125,7 +143,9 @@ a {
 }
 
 .header-content {
-  color: var(--teal);
+  position: relative;
+  z-index: 2;
+  color: var(--teal-dark);
   text-align: left;
 }
 
@@ -147,13 +167,13 @@ p {
 
 .header-content h2 {
   margin-bottom: 24px;
-  color: #315b7c;
+  color: #234d6d;
   font-size: 24px;
   line-height: 1.2;
 }
 
 .header-content strong {
-  color: var(--accent);
+  color: #8f4d46;
 }
 
 .icon-container {
@@ -164,8 +184,10 @@ p {
 
 .icon-item {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  align-items: flex-start;
+  gap: 15px;
+  color: #23435d;
+  line-height: 1.45;
 }
 
 .icon-mark {
@@ -173,40 +195,56 @@ p {
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  color: var(--paper);
-  background: var(--teal-dark);
-  border-radius: 50%;
-  font-size: 14px;
-  font-weight: 800;
+  width: 38px;
+  height: 38px;
+  color: var(--teal-dark);
+}
+
+.icon-mark svg {
+  width: 34px;
+  height: 34px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .button-container {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 24px;
   margin-bottom: 24px;
 }
 
 .button-container .button {
-  width: 100%;
+  display: inline-flex;
+  width: auto;
   margin: 0;
-  padding: 10px 20px;
-  color: #111;
-  background: var(--warm);
-  border: 2px solid rgba(255, 193, 7, 0.5);
-  border-radius: 20px;
+  padding: 9px 17px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--teal-dark);
+  background: rgba(255, 241, 184, 0.86);
+  border: 1.5px solid rgba(148, 116, 28, 0.42);
+  border-radius: 999px;
   font: inherit;
   font-weight: 700;
+  line-height: 1;
   transition: background-color 150ms ease-out, color 150ms ease-out, transform 150ms ease-out;
 }
 
-.button-container .button span {
-  display: block;
-  font-size: 12px;
-  font-weight: 700;
+.button-container .button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .button-container .button:hover:not(:disabled) {
@@ -217,16 +255,30 @@ p {
 
 .button-container .button:disabled {
   cursor: not-allowed;
-  opacity: 0.82;
+  opacity: 0.78;
 }
 
 .header-image {
+  position: relative;
+  z-index: 1;
   max-width: 90%;
   margin: 24px auto 0;
 }
 
+.header-image::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 16%;
+  background: linear-gradient(90deg, var(--hero-mid) 0%, rgba(184, 216, 235, 0.72) 28%, transparent 100%);
+  content: "";
+  pointer-events: none;
+}
+
 .teaser-image {
   margin: 0 auto;
+  filter: saturate(0.92) contrast(0.97);
+  -webkit-mask-image: radial-gradient(ellipse 88% 94% at 54% 49%, #000 62%, rgba(0, 0, 0, 0.92) 74%, transparent 100%);
+  mask-image: radial-gradient(ellipse 88% 94% at 54% 49%, #000 62%, rgba(0, 0, 0, 0.92) 74%, transparent 100%);
 }
 
 main {
@@ -827,13 +879,20 @@ figcaption {
   }
 
   .button-container {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: grid;
+    width: max-content;
+    max-width: 100%;
+    grid-template-columns: repeat(2, max-content);
+    gap: 8px;
   }
 
   .button-container .button {
-    padding: 8px 4px;
-    border-radius: 12px;
+    padding: 8px 13px;
     font-size: 14px;
+  }
+
+  .header-image::after {
+    display: none;
   }
 
   .sub-section h1.text {
