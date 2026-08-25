@@ -454,6 +454,41 @@ hr {
   font-size: 18px;
 }
 
+.section-subtitle {
+  margin: 30px 0 14px;
+  color: var(--teal-dark);
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.alignment-levels {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 0 0 16px;
+}
+
+.alignment-levels article {
+  padding: 16px 18px;
+  background: #f8fbfd;
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--blue);
+  border-radius: 8px;
+}
+
+.alignment-levels h3 {
+  margin-bottom: 6px;
+  color: var(--teal-dark);
+  font-size: 19px;
+}
+
+.alignment-levels p {
+  margin-bottom: 0;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
 .paper-subsection {
   margin-top: 40px;
 }
@@ -500,8 +535,8 @@ figure {
   padding: 0;
   overflow: hidden;
   background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 8px;
+  border: 0;
+  border-radius: 0;
   cursor: zoom-in;
 }
 
@@ -1025,6 +1060,10 @@ figcaption {
 
   .scenario-grid,
   .diagnostic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .alignment-levels {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
