@@ -1033,12 +1033,6 @@ figcaption {
   }
 }
 
-@media (min-width: 1000px) {
-  .rollout-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 767px) {
   .nav-bar {
     display: none !important;
