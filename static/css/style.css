@@ -443,15 +443,6 @@ hr {
   margin-bottom: 72px;
 }
 
-.section-kicker {
-  margin: 0 0 6px;
-  color: #0b63ce;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .sub-section h1.text {
   margin-bottom: 16px;
   color: var(--teal-dark);
@@ -482,12 +473,20 @@ hr {
 }
 
 .compact-paper-figure {
-  width: min(100%, 560px);
   margin: 28px auto 20px;
 }
 
-.compact-paper-figure.wide {
-  width: min(100%, 760px);
+.rollout-budget-figure {
+  width: min(82%, 720px);
+  margin: 28px auto 20px;
+}
+
+.target-hit-figure {
+  width: min(58%, 400px);
+}
+
+.training-response-figure {
+  width: min(78%, 600px);
 }
 
 figure {

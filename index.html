@@ -202,7 +202,6 @@
       </section>
 
       <section id="experiments" class="sub-section paper-section">
-        <p class="section-kicker">Section 4</p>
         <h1 class="text">Evaluation on PAWBench</h1>
 
         <section class="paper-subsection" aria-labelledby="evaluation-setup-title">
@@ -283,7 +282,7 @@
           <p class="text">
             We test two measurement explanations for the observed gap: whether the rollout budget is too small, and whether PAWEval disagrees with humans on clear terminal outcomes.
           </p>
-          <figure>
+          <figure class="rollout-budget-figure">
             <button class="figure-button" type="button" data-zoom-src="static/img/rollout_budget_diagnostics.png" data-zoom-caption="Larger rollout budgets increase coverage but leave calibration largely unchanged." aria-label="Enlarge rollout-budget sensitivity figure">
               <img data-zoomable draggable="false" src="static/img/rollout_budget_diagnostics.png" width="2964" height="1012" alt="Conditional TVD and valid-support coverage as rollout budget increases from K equals 1 to 100." loading="lazy">
             </button>
@@ -318,7 +317,6 @@
       </section>
 
       <section id="alignment-interventions" class="sub-section paper-section">
-        <p class="section-kicker">Section 5</p>
         <h1 class="text">Toward Probabilistically Aligned World Modeling</h1>
         <p class="text">
           Generating one plausible future, or controlling one requested future, does not amount to controlling a distribution of futures. We intervene at three distinct interfaces that can shape this distribution: language specifies a requested future, initial noise selects among futures, and learning determines how the model allocates probability mass.
@@ -373,7 +371,7 @@
             </table>
           </div>
 
-          <figure class="compact-paper-figure">
+          <figure class="compact-paper-figure target-hit-figure">
             <button class="figure-button" type="button" data-zoom-src="static/img/explicit_target_realization.png" data-zoom-caption="Oracle prompt engineering often misses requested outcomes." aria-label="Enlarge explicit-target realization figure">
               <img data-zoomable draggable="false" src="static/img/explicit_target_realization.png" width="753" height="443" alt="Target Outcome Following Rate for four video generators under explicit requested outcomes." loading="lazy">
             </button>
@@ -431,7 +429,7 @@
               </tbody>
             </table>
           </div>
-          <figure class="compact-paper-figure wide">
+          <figure class="compact-paper-figure training-response-figure">
             <button class="figure-button" type="button" data-zoom-src="static/img/training_mass_response.png" data-zoom-caption="Training steers outcome mass across scenes, but both scenes follow similar trends." aria-label="Enlarge training-mixture response figure">
               <img data-zoomable draggable="false" src="static/img/training_mass_response.png" width="837" height="444" alt="Generated left-fall frequency for upright and left-leaning pencils as training left-fall share increases." loading="lazy">
             </button>
@@ -475,7 +473,7 @@
       <section id="conclusion" class="sub-section">
         <h1 class="text">Conclusion</h1>
         <p class="text">
-          PAWBench shows that plausible, diverse, or controllable rollouts do not by themselves establish probabilistically aligned world modeling. Across eleven current video generators, no model consistently matches the reference probabilities while recovering the range of valid futures.
+          World modeling requires more than producing plausible continuations; a world model should capture the distribution of possible futures under the same initial observation and action. We introduce PAWBench to make this requirement measurable through repeated video rollouts. Across eleven current video generators, no model consistently matches the reference probabilities while recovering the range of valid futures, and the gap cannot be explained by finite sampling or disagreement with human judgments on clear outcomes. Controlled interventions further show that model distributions do not reliably track causal changes in the physical process. Language can request individual futures, coupled noise can broaden finite-budget exploration, and fine-tuning can shift outcome frequencies, but none reliably recovers the scene-conditioned distribution over possible futures. PAWBench therefore shows that plausible, diverse, or controllable rollouts do not by themselves establish probabilistically aligned world modeling across different physical states.
         </p>
       </section>
 
