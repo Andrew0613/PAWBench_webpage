@@ -477,6 +477,10 @@ figcaption {
   line-height: 1.45;
 }
 
+.benchmark-taxonomy-figure {
+  margin-top: 24px;
+}
+
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -19,8 +19,8 @@ Then open <http://localhost:8000/>.
 - Text is adapted from the current PAWBench manuscript in `/mnt/shared-storage-user/puyuandong/glv/pawbench-overleaf`.
 - The main results table is sourced from `table/main_results.tex` in that manuscript checkout.
 - `static/img/hero-teaser-spring.png` is the current user-selected PAWBench teaser and social preview image.
+- `static/img/scenario_taxonomy.png` is a crop-box-faithful PNG export of the manuscript's current Figure 2 (`figure/rendered/scenario_taxonomy.pdf`).
 - The remaining figures are PAWBench manuscript figures already present in this target site.
-- The known flawed taxonomy raster is intentionally not used.
 
 The compact arXiv, PDF, Code, and Benchmark resource controls remain disabled until their public URLs are authorized.
 

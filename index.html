@@ -176,43 +176,14 @@
           PAWBench evaluates a video generation model through repeated rollouts conditioned on the same initial observation and action. Each benchmark item provides a source image, an action prompt, a finite set of valid terminal outcomes, and, when available, a reference distribution over those outcomes.
         </p>
 
-        <div class="stat-grid" role="list" aria-label="PAWBench benchmark facts">
-          <div role="listitem"><strong>50</strong><span>scenarios</span></div>
-          <div role="listitem"><strong>25 / 25</strong><span>Calibration / Coverage</span></div>
-          <div role="listitem"><strong>K = 50</strong><span>rollouts per scenario</span></div>
-          <div role="listitem"><strong>11</strong><span>video generators</span></div>
-        </div>
-
-        <section class="scenario-explorer" aria-label="PAWBench scenario track explorer">
-          <div class="scenario-tabs" role="tablist" aria-label="PAWBench tracks">
-            <button class="scenario-tab active" type="button" role="tab" id="scenario-tab-calibration" aria-selected="true" aria-controls="scenario-panel-calibration" data-scenario-tab="calibration">PAW-Calibration</button>
-            <button class="scenario-tab" type="button" role="tab" id="scenario-tab-coverage" aria-selected="false" aria-controls="scenario-panel-coverage" data-scenario-tab="coverage" tabindex="-1">PAW-Coverage</button>
-          </div>
-          <div class="scenario-panel" id="scenario-panel-calibration" role="tabpanel" aria-labelledby="scenario-tab-calibration" data-scenario-panel="calibration">
-            <h2>Probability mass</h2>
-            <p>25 scenarios with analytically specified or symmetry-derived reference distributions.</p>
-            <ul>
-              <li>Toss</li>
-              <li>Rotation</li>
-              <li>Routing</li>
-              <li>Draw-style randomizers</li>
-            </ul>
-          </div>
-          <div class="scenario-panel" id="scenario-panel-coverage" role="tabpanel" aria-labelledby="scenario-tab-coverage" data-scenario-panel="coverage" hidden>
-            <h2>Valid support</h2>
-            <p>25 scenarios with enumerable valid outcomes but no reliable reference probabilities.</p>
-            <ul>
-              <li>Collision</li>
-              <li>Stability</li>
-              <li>Agent interaction</li>
-              <li>Material transition</li>
-            </ul>
-          </div>
-        </section>
-
-        <p class="text">
-          This split separates two failures that single-sample evaluation cannot distinguish: probability misallocation and missing valid outcomes. The rejected taxonomy raster is intentionally not used here; the scenario presentation is HTML so it cannot publish the known coin/die mismatch.
-        </p>
+        <figure class="benchmark-taxonomy-figure">
+          <button class="figure-button" type="button" data-zoom-src="static/img/scenario_taxonomy.png" data-zoom-caption="PAWBench Figure 2: eight mechanism groups organized into PAW-Calibration and PAW-Coverage." aria-label="Enlarge PAWBench scenario taxonomy">
+            <img data-zoomable draggable="false" src="static/img/scenario_taxonomy.png" width="2357" height="930" alt="PAWBench scenario taxonomy showing four PAW-Calibration mechanism groups and four PAW-Coverage mechanism groups with representative source images and action prompts." loading="lazy">
+          </button>
+          <figcaption>
+            <strong>Figure 2: PAWBench scenario taxonomy.</strong> PAWBench covers eight mechanism groups under fixed initial observations and actions. PAW-Calibration contains calibrated probability scenarios with analytically specified reference distributions, while PAW-Coverage contains complex stochastic interactions evaluated by valid-support coverage. Each scenario fixes the source image and action prompt, then scores repeated model rollouts by their terminal outcomes.
+          </figcaption>
+        </figure>
       </section>
 
       <section id="paweval" class="sub-section">
@@ -225,7 +196,7 @@
             <img data-zoomable draggable="false" src="static/img/paweval_overview.png" width="1229" height="360" alt="PAWEval paper figure showing repeated video rollouts, rubric-based outcome readout, and aggregation into a future distribution." loading="lazy">
           </button>
           <figcaption>
-            <strong>Figure 2:</strong> PAWEval converts repeated rollouts into empirical distributions over valid terminal outcomes, while reporting readout failures separately.
+            <strong>Figure 3:</strong> PAWEval converts repeated rollouts into empirical distributions over valid terminal outcomes, while reporting readout failures separately.
           </figcaption>
         </figure>
       </section>
@@ -300,7 +271,7 @@
             <img data-zoomable draggable="false" src="static/img/causal_noncausal_interventions.png" width="2115" height="639" alt="Representative causal and non-causal paper diagnostic pairs showing that model distributions may shift for irrelevant cues or fail to shift for causal changes." loading="lazy">
           </button>
           <figcaption>
-            <strong>Figure 3:</strong> Two representative K=50 causal/non-causal pairs. Bars report P(outcome | valid readout): invalid readouts are excluded, there is no pooled score, and the figure is diagnostic only.
+            <strong>Figure 4:</strong> Two representative K=50 causal/non-causal pairs. Bars report P(outcome | valid readout): invalid readouts are excluded, there is no pooled score, and the figure is diagnostic only.
           </figcaption>
         </figure>
 
