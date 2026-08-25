@@ -101,130 +101,141 @@
 
   wireTabs(".scenario-tab", ".scenario-panel", "scenarioTab", null, "scenarioPanel");
 
-  const evidenceCases = {
-    concept: [
-      {
-        kind: "Paper evidence",
-        title: "One plausible future",
-        caption: "A single rollout is one sample from a distribution; it cannot establish support or probability-mass alignment.",
-        src: "static/img/one_plausible_future.png",
-        width: "2653",
-        height: "975",
-        alt: "Paper evidence figure: one plausible future is one sample from a wider outcome distribution."
-      }
-    ],
-    evaluation: [
-      {
-        kind: "Paper evidence",
-        title: "PAWEval overview",
-        caption: "Readable, in-schema outcome labels are aggregated into conditional distributions; model-scene pairs are scoreable only after the gate.",
-        src: "static/img/paweval_overview.png",
-        width: "1229",
-        height: "360",
-        alt: "Paper evidence figure: PAWEval maps repeated rollouts to terminal outcome distributions."
-      },
-      {
-        kind: "Controlled diagnostic",
-        title: "Causal and non-causal controls",
-        caption: "Models underreact to physically causal interventions and overreact to non-causal cues; bars are conditional on valid readouts.",
-        src: "static/img/causal_noncausal_interventions.png",
-        width: "2115",
-        height: "639",
-        alt: "Controlled diagnostic with paired causal and non-causal interventions."
-      },
-      {
-        kind: "Evaluation robustness",
-        title: "Rollout-budget sensitivity",
-        caption: "Larger rollout budgets increase coverage for some models but leave calibration largely unchanged.",
-        src: "static/img/rollout_budget_diagnostics.png",
-        width: "2964",
-        height: "1012",
-        alt: "Conditional TVD and coverage as rollout budget increases from one to one hundred."
-      }
-    ],
-    alignment: [
-      {
-        kind: "Paper evidence",
-        title: "Explicit target realization",
-        caption: "Target prompts measure whether generators realize requested outcomes; failures count as misses in the 2,500 planned rows per model.",
-        src: "static/img/explicit_target_realization.png",
-        width: "753",
-        height: "443",
-        alt: "Paper evidence figure showing explicit target realization rates across video generators."
-      },
-      {
-        kind: "Paper evidence",
-        title: "Training mass response",
-        caption: "Training-mixture plots are conditional on readable left/right outcomes, with invalid readouts excluded.",
-        src: "static/img/training_mass_response.png",
-        width: "837",
-        height: "444",
-        alt: "Paper evidence figure showing generated left-fall frequency as training left-fall share increases."
-      }
-    ]
+  const rolloutScenes = {
+    a01: {
+      code: "A-01 · stochastic toss",
+      title: "Coin flip",
+      action: "Flick the coin once.",
+      clips: [
+        { model: "HappyHorse", asset: "a01-happyhorse-r000", outcome: "PAWEval · heads", status: "Readable" },
+        { model: "Veo3.1 Fast", asset: "a01-veo31-r000", outcome: "PAWEval · not readable", status: "Outcome hidden", unreadable: true },
+        { model: "Kling 3 Std.", asset: "a01-kling3-r000", outcome: "PAWEval · heads", status: "Readable" },
+        { model: "Wan2.2", asset: "a01-wan22-r000", outcome: "PAWEval · heads", status: "Readable" }
+      ]
+    },
+    a09: {
+      code: "A-09 · two-outcome fall",
+      title: "Vertical pencil fall",
+      action: "Move the hand upward once and let the pencil fall.",
+      clips: [
+        { model: "HappyHorse", asset: "a09-happyhorse-r000", outcome: "PAWEval · falls right", status: "Readable" },
+        { model: "Veo3.1 Fast", asset: "a09-veo31-r000", outcome: "PAWEval · falls right", status: "Readable" },
+        { model: "Kling 3 Std.", asset: "a09-kling3-r000", outcome: "PAWEval · falls left", status: "Readable" },
+        { model: "Wan2.2", asset: "a09-wan22-r000", outcome: "PAWEval · falls right", status: "Readable" }
+      ]
+    },
+    bc01: {
+      code: "BC-01 · collision and containment",
+      title: "Ball toss into cup",
+      action: "Toss the ball once from the visible hand pose toward the cup.",
+      clips: [
+        { model: "HappyHorse", asset: "bc01-happyhorse-r000", outcome: "PAWEval · clean in cup", status: "Readable" },
+        { model: "Veo3.1 Fast", asset: "bc01-veo31-r000", outcome: "PAWEval · clean in cup", status: "Readable" },
+        { model: "Kling 3 Std.", asset: "bc01-kling3-r000", outcome: "PAWEval · clean in cup", status: "Readable" },
+        { model: "Wan2.2", asset: "bc01-wan22-r000", outcome: "PAWEval · clean in cup", status: "Readable" }
+      ]
+    }
   };
 
-  let evidenceCategory = "concept";
-  let evidenceIndex = 0;
-  const evidenceKind = document.getElementById("evidence-kind");
-  const evidenceTitle = document.getElementById("evidence-title");
-  const evidenceCaption = document.getElementById("evidence-caption");
-  const evidenceImage = document.getElementById("evidence-image");
-  const evidenceFigure = document.querySelector("[data-evidence-zoom]");
-  const evidencePanel = document.getElementById("evidence-panel");
-  const evidenceNavButtons = Array.from(document.querySelectorAll("[data-evidence-nav]"));
+  const rolloutPanel = document.getElementById("rollout-panel");
+  const rolloutCode = document.getElementById("rollout-scene-code");
+  const rolloutTitle = document.getElementById("rollout-scene-title");
+  const rolloutAction = document.getElementById("rollout-scene-action");
+  const rolloutCards = Array.from(document.querySelectorAll("[data-rollout-card]"));
+  const rolloutPlayButton = document.querySelector("[data-rollout-play]");
+  const rolloutRestartButton = document.querySelector("[data-rollout-restart]");
 
-  function renderEvidence() {
-    const cases = evidenceCases[evidenceCategory] || [];
-    const current = cases[evidenceIndex] || cases[0];
-    if (!current || !evidenceImage || !evidenceFigure) return;
+  function rolloutVideos() {
+    return rolloutCards.map((card) => card.querySelector("[data-rollout-video]")).filter(Boolean);
+  }
 
-    evidenceKind.textContent = current.kind;
-    evidenceTitle.textContent = current.title;
-    evidenceCaption.textContent = current.caption;
-    evidenceImage.src = current.src;
-    evidenceImage.width = current.width;
-    evidenceImage.height = current.height;
-    evidenceImage.alt = current.alt;
-    evidenceFigure.dataset.zoomSrc = current.src;
-    evidenceFigure.dataset.zoomCaption = `${current.title}: ${current.caption}`;
+  function setRolloutPlaying(isPlaying) {
+    if (!rolloutPlayButton) return;
+    rolloutPlayButton.dataset.playing = String(isPlaying);
+    rolloutPlayButton.textContent = isPlaying ? "Pause all" : "Play all";
+  }
 
-    const hasMultipleCases = cases.length > 1;
-    evidenceNavButtons.forEach((button) => {
-      button.disabled = !hasMultipleCases;
-      button.setAttribute("aria-disabled", String(!hasMultipleCases));
+  function pauseRollouts() {
+    rolloutVideos().forEach((video) => video.pause());
+    setRolloutPlaying(false);
+  }
+
+  function renderRolloutScene(sceneKey) {
+    const scene = rolloutScenes[sceneKey];
+    if (!scene) return;
+
+    pauseRollouts();
+    if (rolloutCode) rolloutCode.textContent = scene.code;
+    if (rolloutTitle) rolloutTitle.textContent = scene.title;
+    if (rolloutAction) rolloutAction.textContent = scene.action;
+
+    rolloutCards.forEach((card, index) => {
+      const clip = scene.clips[index];
+      const model = card.querySelector("[data-rollout-model]");
+      const video = card.querySelector("[data-rollout-video]");
+      const source = video?.querySelector("source");
+      const outcome = card.querySelector("[data-rollout-outcome]");
+      const status = card.querySelector("[data-rollout-status]");
+      if (!clip || !video || !source) return;
+
+      if (model) model.textContent = clip.model;
+      video.poster = `static/video/rollouts/${clip.asset}.jpg`;
+      video.setAttribute("aria-label", `${clip.model} rollout for ${scene.title}`);
+      source.src = `static/video/rollouts/${clip.asset}.mp4`;
+      video.load();
+      if (outcome) {
+        outcome.textContent = clip.outcome;
+        outcome.classList.toggle("unreadable", Boolean(clip.unreadable));
+      }
+      if (status) status.textContent = clip.status;
+    });
+
+    const activeTab = document.querySelector(`[data-rollout-scene="${sceneKey}"]`);
+    if (rolloutPanel && activeTab) rolloutPanel.setAttribute("aria-labelledby", activeTab.id);
+  }
+
+  wireTabs(".rollout-tab", null, "rolloutScene", renderRolloutScene);
+
+  if (rolloutPlayButton) {
+    rolloutPlayButton.addEventListener("click", async () => {
+      const videos = rolloutVideos();
+      const shouldPause = rolloutPlayButton.dataset.playing === "true";
+      if (shouldPause) {
+        pauseRollouts();
+        return;
+      }
+
+      videos.forEach((video) => {
+        video.muted = true;
+        if (video.ended) video.currentTime = 0;
+      });
+      await Promise.allSettled(videos.map((video) => video.play()));
+      setRolloutPlaying(videos.some((video) => !video.paused));
     });
   }
 
-  function setEvidenceCategory(category) {
-    evidenceCategory = category;
-    evidenceIndex = 0;
-    const tab = document.querySelector(`[data-evidence-category="${category}"]`);
-    if (tab && evidencePanel) {
-      evidencePanel.setAttribute("aria-labelledby", tab.id);
-    }
-    renderEvidence();
+  if (rolloutRestartButton) {
+    rolloutRestartButton.addEventListener("click", () => {
+      const wasPlaying = rolloutPlayButton?.dataset.playing === "true";
+      rolloutVideos().forEach((video) => {
+        video.currentTime = 0;
+        if (wasPlaying) void video.play();
+      });
+    });
   }
 
-  wireTabs(".evidence-tab", null, "evidenceCategory", setEvidenceCategory);
-
-  evidenceNavButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const cases = evidenceCases[evidenceCategory] || [];
-      if (cases.length === 0) return;
-      const direction = button.dataset.evidenceNav === "next" ? 1 : -1;
-      evidenceIndex = (evidenceIndex + direction + cases.length) % cases.length;
-      renderEvidence();
+  rolloutVideos().forEach((video) => {
+    video.addEventListener("ended", () => {
+      if (rolloutVideos().every((item) => item.ended || item.paused)) setRolloutPlaying(false);
     });
   });
-  renderEvidence();
 
   const dialog = document.querySelector(".image-dialog");
   const dialogImage = dialog ? dialog.querySelector("img") : null;
   const dialogCaption = dialog ? dialog.querySelector("#dialog-caption") : null;
   const closeButton = dialog ? dialog.querySelector(".dialog-close") : null;
 
-  document.querySelectorAll("[data-zoom-src], [data-evidence-zoom]").forEach((button) => {
+  document.querySelectorAll("[data-zoom-src]").forEach((button) => {
     button.addEventListener("click", () => {
       if (!dialog || !dialogImage || !dialogCaption || typeof dialog.showModal !== "function") return;
       dialogImage.src = button.dataset.zoomSrc;

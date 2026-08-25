@@ -442,30 +442,63 @@
       </section>
 
       <section id="visual-evidence" class="sub-section">
-        <h1 class="text">Visual Evidence Browser</h1>
+        <h1 class="text">Model Rollout Gallery</h1>
         <p class="text">
-          Browse PAWBench paper figures and diagnostics using the same tabbed evidence pattern as the reference project page. These panels are not raw videos or additional rollout results; each case is labeled as paper evidence or a controlled diagnostic.
+          Compare four video generators under the same initial observation and action. Each tab shows one selected base-condition rollout per model; PAWEval labels describe only the displayed clip and are not model-level scores.
         </p>
 
-        <section class="evidence-gallery" aria-label="PAWBench visual evidence browser">
-          <div class="evidence-tabs" role="tablist" aria-label="Evidence categories">
-            <button class="evidence-tab active" type="button" role="tab" id="evidence-tab-concept" aria-selected="true" aria-controls="evidence-panel" data-evidence-category="concept">Concept</button>
-            <button class="evidence-tab" type="button" role="tab" id="evidence-tab-evaluation" aria-selected="false" aria-controls="evidence-panel" data-evidence-category="evaluation" tabindex="-1">Evaluation</button>
-            <button class="evidence-tab" type="button" role="tab" id="evidence-tab-alignment" aria-selected="false" aria-controls="evidence-panel" data-evidence-category="alignment" tabindex="-1">Alignment</button>
+        <section class="rollout-gallery" aria-label="Cross-model rollout comparison" data-rollout-gallery>
+          <div class="rollout-toolbar">
+            <div class="rollout-tabs" role="tablist" aria-label="Benchmark scenes">
+              <button class="rollout-tab active" type="button" role="tab" id="rollout-tab-a01" aria-selected="true" aria-controls="rollout-panel" data-rollout-scene="a01">Coin flip</button>
+              <button class="rollout-tab" type="button" role="tab" id="rollout-tab-a09" aria-selected="false" aria-controls="rollout-panel" data-rollout-scene="a09" tabindex="-1">Pencil fall</button>
+              <button class="rollout-tab" type="button" role="tab" id="rollout-tab-bc01" aria-selected="false" aria-controls="rollout-panel" data-rollout-scene="bc01" tabindex="-1">Ball into cup</button>
+            </div>
+            <div class="rollout-controls" aria-label="Synchronized video controls">
+              <button type="button" data-rollout-play>Play all</button>
+              <button type="button" data-rollout-restart>Restart</button>
+            </div>
           </div>
 
-          <div class="evidence-case-meta" aria-live="polite" aria-atomic="true">
-            <p class="evidence-kind" id="evidence-kind">Paper evidence</p>
-            <h2 id="evidence-title">One plausible future</h2>
-            <p id="evidence-caption">A single rollout is one sample from a distribution; it cannot establish support or probability-mass alignment.</p>
+          <div class="rollout-scene-meta" aria-live="polite" aria-atomic="true">
+            <p class="rollout-scene-code" id="rollout-scene-code">A-01 · stochastic toss</p>
+            <h2 id="rollout-scene-title">Coin flip</h2>
+            <p><strong>Action:</strong> <span id="rollout-scene-action">Flick the coin once.</span></p>
+            <p class="rollout-boundary" id="rollout-scene-boundary">Selected rollout r000 · base condition · PAWEval terminal readout</p>
           </div>
 
-          <div class="evidence-frame" id="evidence-panel" role="tabpanel" aria-labelledby="evidence-tab-concept">
-            <button class="evidence-nav evidence-prev" type="button" data-evidence-nav="prev" aria-label="Previous evidence case">&#8249;</button>
-            <button class="figure-button evidence-figure" type="button" data-evidence-zoom aria-label="Enlarge current evidence figure">
-              <img id="evidence-image" src="static/img/one_plausible_future.png" width="2653" height="975" alt="Paper evidence figure: one plausible future is one sample from a wider outcome distribution.">
-            </button>
-            <button class="evidence-nav evidence-next" type="button" data-evidence-nav="next" aria-label="Next evidence case">&#8250;</button>
+          <div class="rollout-grid" id="rollout-panel" role="tabpanel" aria-labelledby="rollout-tab-a01">
+            <article class="rollout-card" data-rollout-card>
+              <header><h3 data-rollout-model>HappyHorse</h3><span>r000</span></header>
+              <video controls muted playsinline preload="metadata" poster="static/video/rollouts/a01-happyhorse-r000.jpg" data-rollout-video aria-label="HappyHorse rollout for coin flip">
+                <source src="static/video/rollouts/a01-happyhorse-r000.mp4" type="video/mp4">
+              </video>
+              <footer><span class="rollout-outcome" data-rollout-outcome>PAWEval · heads</span><span class="rollout-status" data-rollout-status>Readable</span></footer>
+            </article>
+
+            <article class="rollout-card" data-rollout-card>
+              <header><h3 data-rollout-model>Veo3.1 Fast</h3><span>r000</span></header>
+              <video controls muted playsinline preload="metadata" poster="static/video/rollouts/a01-veo31-r000.jpg" data-rollout-video aria-label="Veo3.1 Fast rollout for coin flip">
+                <source src="static/video/rollouts/a01-veo31-r000.mp4" type="video/mp4">
+              </video>
+              <footer><span class="rollout-outcome unreadable" data-rollout-outcome>PAWEval · not readable</span><span class="rollout-status" data-rollout-status>Outcome hidden</span></footer>
+            </article>
+
+            <article class="rollout-card" data-rollout-card>
+              <header><h3 data-rollout-model>Kling 3 Std.</h3><span>r000</span></header>
+              <video controls muted playsinline preload="metadata" poster="static/video/rollouts/a01-kling3-r000.jpg" data-rollout-video aria-label="Kling 3 Standard rollout for coin flip">
+                <source src="static/video/rollouts/a01-kling3-r000.mp4" type="video/mp4">
+              </video>
+              <footer><span class="rollout-outcome" data-rollout-outcome>PAWEval · heads</span><span class="rollout-status" data-rollout-status>Readable</span></footer>
+            </article>
+
+            <article class="rollout-card" data-rollout-card>
+              <header><h3 data-rollout-model>Wan2.2</h3><span>r000</span></header>
+              <video controls muted playsinline preload="metadata" poster="static/video/rollouts/a01-wan22-r000.jpg" data-rollout-video aria-label="Wan2.2 rollout for coin flip">
+                <source src="static/video/rollouts/a01-wan22-r000.mp4" type="video/mp4">
+              </video>
+              <footer><span class="rollout-outcome" data-rollout-outcome>PAWEval · heads</span><span class="rollout-status" data-rollout-status>Readable</span></footer>
+            </article>
           </div>
         </section>
       </section>

@@ -21,6 +21,7 @@ Then open <http://localhost:8000/>.
 - `static/img/hero-teaser-spring.png` is the current user-selected PAWBench teaser and social preview image.
 - `static/img/scenario_taxonomy.png` is a crop-box-faithful PNG export of the manuscript's current Figure 2 (`figure/rendered/scenario_taxonomy.pdf`).
 - `static/img/rollout_budget_diagnostics.png` is the manuscript's current rollout-budget robustness figure.
+- `static/video/rollouts/` contains twelve web-compressed, base-condition `r000` rollouts for the cross-model gallery. `provenance.json` binds every clip to its PAWBench run, sample ID, PAWEval terminal label, source hash, and compressed-asset hash.
 - The remaining figures are PAWBench manuscript figures already present in this target site.
 
 The compact arXiv, PDF, Code, and Benchmark resource controls remain disabled until their public URLs are authorized.
@@ -29,7 +30,7 @@ The compact arXiv, PDF, Code, and Benchmark resource controls remain disabled un
 
 - `index.html`: single-page project website.
 - `static/css/style.css`: template-style page, navigation, figure, and table styling.
-- `static/js/main.js`: local jump navigation, figure zoom, and BibTeX copy behavior.
+- `static/js/main.js`: local jump navigation, synchronized rollout comparison, figure zoom, and BibTeX copy behavior.
 - `404.html`: self-contained static fallback page.
 - `.nojekyll`: disables Jekyll processing on GitHub Pages.
 

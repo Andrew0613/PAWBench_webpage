@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "selection": "One base-condition r000 rollout per model and scene; qualitative comparison only.",
+  "encoding": {
+    "container": "MP4",
+    "video_codec": "H.264",
+    "audio": false,
+    "max_width": 640,
+    "frame_rate": 12,
+    "crf": 29,
+    "fast_start": true
+  },
+  "clips": [
+    {
+      "asset": "a01-happyhorse-r000.mp4",
+      "scene_id": "A-01",
+      "model": "HappyHorse",
+      "run_id": "PAW-RUN-000013",
+      "sample_id": "picaworld_track_a__A-01__happy_horse__r000",
+      "paweval_outcome": "heads",
+      "source_sha256": "0fc2cedbb8e59a21944e32f34492d3b77c9eb2938b06efa3ee399a2191d6fd97",
+      "web_sha256": "556f876055607b96fe8ab856f6e2cac027a99c3d92d027819642b55102550cc3"
+    },
+    {
+      "asset": "a01-veo31-r000.mp4",
+      "scene_id": "A-01",
+      "model": "Veo3.1 Fast",
+      "run_id": "PAW-RUN-000015",
+      "sample_id": "picaworld_track_a__A-01__veo31__r000",
+      "paweval_outcome": "NOT_READABLE",
+      "source_sha256": "61bc9b5c1b1e8235d92cf1cc82efb824873c25b41a4d048399ebf8d24a0ce83e",
+      "web_sha256": "d9f8d2361669c1554e355eeab2090a9d9737b1d735343e762e74a318511c68b1"
+    },
+    {
+      "asset": "a01-kling3-r000.mp4",
+      "scene_id": "A-01",
+      "model": "Kling 3 Std.",
+      "run_id": "PAW-RUN-000017",
+      "sample_id": "picaworld_track_a__A-01__kling_v3_std__r000",
+      "paweval_outcome": "heads",
+      "source_sha256": "2fea41b69d70ecb622aea2fbf39414bd8b417d8adcfcf4309318673bdbdb296e",
+      "web_sha256": "c35bf91a737baae1087317b5eb4ddc5b3e03ff9183394a63a5907d3aa696a70e"
+    },
+    {
+      "asset": "a01-wan22-r000.mp4",
+      "scene_id": "A-01",
+      "model": "Wan2.2",
+      "run_id": "PAW-RUN-000023",
+      "sample_id": "stagbench_wan22_i2v_k50__A-01__wan2.2__r000",
+      "paweval_outcome": "heads",
+      "source_sha256": "5ad18e7a199623335adb9ced9e2b97d20a0392221713b430f04326582de49792",
+      "web_sha256": "df50df4b7664eec09cdbfc79764d553d6c38bbe7f8f77882f29bf78ae031a4e3"
+    },
+    {
+      "asset": "a09-happyhorse-r000.mp4",
+      "scene_id": "A-09",
+      "model": "HappyHorse",
+      "run_id": "PAW-RUN-000013",
+      "sample_id": "picaworld_track_a__A-09__happy_horse__r000",
+      "paweval_outcome": "falls_right",
+      "source_sha256": "1ef38a7a7a22ce90e47283ad8ede3c7c8768299f3b0b97c3e38f3c4949a4a49d",
+      "web_sha256": "3634da5be55a80971cbf4fd70a845acd456400ec0407847ca20b44bf0c0d848c"
+    },
+    {
+      "asset": "a09-veo31-r000.mp4",
+      "scene_id": "A-09",
+      "model": "Veo3.1 Fast",
+      "run_id": "PAW-RUN-000015",
+      "sample_id": "picaworld_track_a__A-09__veo31__r000",
+      "paweval_outcome": "falls_right",
+      "source_sha256": "e03b32758ae1d4a8cae449e3866c36bc4215d1ba00daf01a466402b2d3b05124",
+      "web_sha256": "2e26390bcbf599251966b225a354cba6057dc9d4c79b34e7b4c1f9c37391783a"
+    },
+    {
+      "asset": "a09-kling3-r000.mp4",
+      "scene_id": "A-09",
+      "model": "Kling 3 Std.",
+      "run_id": "PAW-RUN-000017",
+      "sample_id": "picaworld_track_a__A-09__kling_v3_std__r000",
+      "paweval_outcome": "falls_left",
+      "source_sha256": "119bd2f38d313f334a7145b6845e76116130b118b9d4fb588d03f801f7bdd175",
+      "web_sha256": "9eba5e5e0a0833a36a7b3bb2b0cb5bf3cf6996ac88afbd9cd690a1cfdbfcf180"
+    },
+    {
+      "asset": "a09-wan22-r000.mp4",
+      "scene_id": "A-09",
+      "model": "Wan2.2",
+      "run_id": "PAW-RUN-000023",
+      "sample_id": "stagbench_wan22_i2v_k50__A-09__wan2.2__r000",
+      "paweval_outcome": "falls_right",
+      "source_sha256": "a4bc14573056d62104c8bf479190c0efb3cbf80bc05cbfc0c09be97d71c7c3fc",
+      "web_sha256": "8c3c79d365b3b4f75f313b709289024f297bf50f9be0e67f4d728ba99192eece"
+    },
+    {
+      "asset": "bc01-happyhorse-r000.mp4",
+      "scene_id": "BC-01",
+      "model": "HappyHorse",
+      "run_id": "PAW-RUN-000014",
+      "sample_id": "picaworld_track_b__BC-01__happy_horse__r000",
+      "paweval_outcome": "clean_in_cup",
+      "source_sha256": "b0923bd6852f1a257601177f650273d400ab5a4e49b61e8d3075fd2c1af206d2",
+      "web_sha256": "417d0f0cb3c083a2e87c149f6efe85b019abe07010ac691167ccddb55ca1630a"
+    },
+    {
+      "asset": "bc01-veo31-r000.mp4",
+      "scene_id": "BC-01",
+      "model": "Veo3.1 Fast",
+      "run_id": "PAW-RUN-000016",
+      "sample_id": "picaworld_track_b__BC-01__veo31__r000",
+      "paweval_outcome": "clean_in_cup",
+      "source_sha256": "92392997b3f22a158344051c03f0a5c7bb1f98ab5b6cd9c2b7346662488b69ba",
+      "web_sha256": "120c27b96e2931b83d8ae1e0e4d66930fc8e76e1a0cd5091b52ef4b56ae48b99"
+    },
+    {
+      "asset": "bc01-kling3-r000.mp4",
+      "scene_id": "BC-01",
+      "model": "Kling 3 Std.",
+      "run_id": "PAW-RUN-000018",
+      "sample_id": "picaworld_track_b__BC-01__kling_v3_std__r000",
+      "paweval_outcome": "clean_in_cup",
+      "source_sha256": "137b6f0b398274a98c53b1825feea12bd8121c7777547f282f3c956b2e5a466f",
+      "web_sha256": "ed4cd02412c717388135c3f331c6a41c4f38689e49f728f99159e3d8562417ba"
+    },
+    {
+      "asset": "bc01-wan22-r000.mp4",
+      "scene_id": "BC-01",
+      "model": "Wan2.2",
+      "run_id": "PAW-RUN-000024",
+      "sample_id": "stagbench_wan22_i2v_k50__BC-01__wan2.2__r000",
+      "paweval_outcome": "clean_in_cup",
+      "source_sha256": "2bdc9afa7a2dc94ce4b90ab684a2f572899e20abde43be0451c2dc04ccf71388",
+      "web_sha256": "547100c012e69020614380c8401bebc391e62aa7ec15b7ffb77d8e5a2e6f2e64"
+    }
+  ]
+}
