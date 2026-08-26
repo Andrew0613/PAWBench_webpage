@@ -54,7 +54,7 @@
                   <path d="M10 16h5m0 0c5 0 4-9 7-9m-7 9h7m-7 0c5 0 4 9 7 9"></path>
                 </svg>
               </span>
-              <div><strong>Benchmark and protocol</strong>: PAWBench formalizes probabilistic alignment with 50 scenarios across eight physical mechanism groups. PAWEval maps repeated rollouts to terminal outcomes, builds empirical distributions from readable in-schema outcomes, and reports readout failures separately.</div>
+              <div><strong>Benchmark and protocol</strong>: PAWBench formalizes probabilistic alignment with 50 scenarios across eight physical mechanism groups. PAWEval maps repeated rollouts to terminal outcomes, builds empirical distributions from readable in-schema outcomes.</div>
             </div>
             <div class="icon-item">
               <span class="icon-mark" aria-hidden="true">
@@ -63,7 +63,7 @@
                   <path d="m5 10 7-4 7 7 8-9"></path>
                 </svg>
               </span>
-              <div><strong>Model diagnosis</strong>: across eleven video generators, no model combines accurate outcome probabilities, broad support recovery, and reliable performance across scenes. Larger rollout budgets and the clear-label human comparison do not account for the observed gap.</div>
+              <div><strong>Model diagnosis</strong>: across eleven video generators, no model combines accurate outcome probabilities, broad support recovery, and reliable performance across scenes.</div>
             </div>
             <div class="icon-item">
               <span class="icon-mark" aria-hidden="true">
@@ -74,7 +74,7 @@
                   <circle cx="15" cy="24" r="3"></circle>
                 </svg>
               </span>
-              <div><strong>Distribution shaping</strong>: language requests named futures, coupled initial noise broadens finite-budget exploration, and fine-tuning shifts learned outcome frequencies. These interventions separate inference-time steering and exploration from changes to the model's learned predictive distribution.</div>
+              <div><strong>Distribution shaping</strong>: language requests named futures, initial noise sampling broadens finite-budget exploration, and fine-tuning shifts learned outcome frequencies. These interventions separate inference-time steering and exploration from changes to the model's learned predictive distribution.</div>
             </div>
           </div>
 
@@ -158,7 +158,7 @@
           Current video generators can follow instructions, maintain temporal coherence, and produce plausible continuations from an observation and an action-like prompt. These capabilities have strengthened the case for treating them as visual world models. Using them as world models requires testing the distribution induced by repeated rollouts.
         </p>
         <p class="text">
-          A world model must do more than render one plausible continuation. When a process is stochastic, the same initial observation and action can lead to several physically valid futures. We call a model <strong>probabilistically aligned</strong> when the distribution induced by its repeated rollouts captures both which futures are possible and how likely each one is. Interaction and planning depend on both the possible consequences of an action and their relative likelihoods.
+          A world model must do more than render visually plausible rollouts. When a process is stochastic, the same initial observation and action can lead to multiple physically valid futures. We call a model <strong>probabilistically aligned</strong> when the distribution induced by its repeated rollouts captures both which futures are possible and how likely each one is. Interaction and planning depend on both the possible consequences of an action and their relative likelihoods.
         </p>
         <p class="text">
           Existing evaluations largely treat generated videos as isolated outputs, scoring visual quality, temporal coherence, prompt alignment, or physical plausibility one video at a time. These criteria cannot reveal whether repeated generations collapse to a subset of valid outcomes or assign those outcomes the wrong probabilities. One plausible future is therefore not enough; PAWBench asks how far current generators are from probabilistically aligned world modeling.
@@ -194,7 +194,7 @@
           Each PAWBench item specifies a source image, one atomic action prompt, and a finite set of valid terminal outcomes. When available, it also provides a reference distribution over those outcomes. A generator receives the same image and action for K repeated rollouts, which PAWEval maps to terminal outcomes and aggregates into an empirical distribution. Fixing the inputs makes variation across rollouts reflect the model-induced future distribution rather than changes in the prompt or image. This repeated-rollout contract is shared by every system in the comparison.
         </p>
         <p class="text">
-          The benchmark contains 50 scenarios across eight physical mechanism groups. <strong>PAW-Calibration</strong> includes 25 scenarios with analytically specified or symmetry-derived reference distributions and tests probability-mass alignment. <strong>PAW-Coverage</strong> includes 25 scenarios whose valid outcomes can be enumerated but whose relative probabilities cannot be specified reliably, and tests valid-support recovery. We report the tracks separately because recovering every valid outcome does not establish that the model assigns the right probability to each one. The two tracks answer different questions about the induced future distribution, so neither can substitute for the other.
+          The benchmark contains 50 scenarios across eight physical mechanism groups. <strong>PAW-Calibration</strong> includes 25 scenarios with analytically specified or symmetry-derived reference distributions and tests probability-mass alignment. <strong>PAW-Coverage</strong> includes 25 scenarios whose valid outcomes can be enumerated but whose relative probabilities cannot be specified reliably, and tests valid-support recovery. We report the tracks separately because recovering every valid outcome does not establish that the model assigns the right probability to each one. The two tracks answer different questions about probabilistic alignment.
         </p>
 
         <figure class="benchmark-taxonomy-figure">
@@ -279,7 +279,7 @@
           </div>
 
           <p class="text">
-            <strong>No model combines well-aligned probability mass, broad support recovery, and reliable performance across scenes.</strong> Cosmos 3 Super I2V has the lowest conditional Calibration TVD, 20.5, but only 80.0% of its Calibration scenes pass the outcome-readout gate. LTX-2.3 has the highest conditional Coverage average, 71.7, but that average is computed over the 72.0% of Coverage scenes that pass. Seedance 2 and LingBot-Video-MoE pass every scene on Calibration and Coverage, respectively, yet neither leads the corresponding conditional metric. Conditional alignment and scene-level reliability must therefore be read together when comparing the eleven generators in Table 1.
+            <strong>Current video generators remain far from probabilistically aligned world modeling.</strong> Cosmos 3 Super I2V has the lowest conditional Calibration TVD, 20.5, but only 80.0% of its Calibration scenes pass the outcome-readout gate. LTX-2.3 has the highest conditional Coverage average, 71.7, but that average is computed over the 72.0% of Coverage scenes that pass. Seedance 2 and LingBot-Video-MoE pass every scene on Calibration and Coverage, respectively, yet neither leads the corresponding conditional metric. Conditional alignment and scene-level reliability must therefore be read together when comparing the eleven generators in Table 1.
           </p>
           <p class="text">
             <strong>Recovering valid futures is not the same as assigning them the right probability.</strong> A generator may expose many plausible outcomes while allocating probability mass incorrectly, or closely match the frequencies of observed outcomes while leaving valid alternatives unseen. PAW-Coverage and PAW-Calibration therefore expose complementary failures and remain separate rather than being collapsed into one score. Recovering valid support is necessary, but it cannot establish correct probability allocation within that support under the same condition in PAWBench.
