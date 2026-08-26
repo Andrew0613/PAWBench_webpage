@@ -101,39 +101,65 @@
 
   wireTabs(".scenario-tab", ".scenario-panel", "scenarioTab", null, "scenarioPanel");
 
+  const rolloutModels = [
+    { model: "HappyHorse", asset: "happyhorse" },
+    { model: "Veo3.1 Fast", asset: "veo31" },
+    { model: "Kling 3 Std.", asset: "kling3" },
+    { model: "Wan2.2", asset: "wan22" },
+    { model: "Cosmos 3 Super I2V", asset: "cosmos3" },
+    { model: "LTX-2.5", asset: "ltx25" },
+    { model: "LingBot-Video-MoE", asset: "lingbot" },
+    { model: "MiniMax H3", asset: "minimaxh3" }
+  ];
+
   const rolloutScenes = {
     a01: {
       code: "A-01 · stochastic toss",
       title: "Coin flip",
       action: "Flick the coin once.",
-      clips: [
-        { model: "HappyHorse", asset: "a01-happyhorse-r000", outcome: "PAWEval · heads", status: "Readable" },
-        { model: "Veo3.1 Fast", asset: "a01-veo31-r000", outcome: "PAWEval · not readable", status: "Outcome hidden", unreadable: true },
-        { model: "Kling 3 Std.", asset: "a01-kling3-r000", outcome: "PAWEval · heads", status: "Readable" },
-        { model: "Wan2.2", asset: "a01-wan22-r000", outcome: "PAWEval · heads", status: "Readable" }
-      ]
+      assetPrefix: "a01"
     },
-    a09: {
-      code: "A-09 · two-outcome fall",
-      title: "Vertical pencil fall",
-      action: "Move the hand upward once and let the pencil fall.",
-      clips: [
-        { model: "HappyHorse", asset: "a09-happyhorse-r000", outcome: "PAWEval · falls right", status: "Readable" },
-        { model: "Veo3.1 Fast", asset: "a09-veo31-r000", outcome: "PAWEval · falls right", status: "Readable" },
-        { model: "Kling 3 Std.", asset: "a09-kling3-r000", outcome: "PAWEval · falls left", status: "Readable" },
-        { model: "Wan2.2", asset: "a09-wan22-r000", outcome: "PAWEval · falls right", status: "Readable" }
-      ]
+    a03: {
+      code: "A-03 · rotation",
+      title: "Two-color equal-sector spinner",
+      action: "Spin the wheel once under the fixed pointer.",
+      assetPrefix: "a03"
+    },
+    a07: {
+      code: "A-07 · routing",
+      title: "Y-track branch",
+      action: "Release the ball once.",
+      assetPrefix: "a07"
+    },
+    a13: {
+      code: "A-13 · draw",
+      title: "Blind draw from transparent box",
+      action: "The man picks up exactly one ball once.",
+      assetPrefix: "a13"
     },
     bc01: {
       code: "BC-01 · collision and containment",
       title: "Ball toss into cup",
       action: "Toss the ball once from the visible hand pose toward the cup.",
-      clips: [
-        { model: "HappyHorse", asset: "bc01-happyhorse-r000", outcome: "PAWEval · clean in cup", status: "Readable" },
-        { model: "Veo3.1 Fast", asset: "bc01-veo31-r000", outcome: "PAWEval · clean in cup", status: "Readable" },
-        { model: "Kling 3 Std.", asset: "bc01-kling3-r000", outcome: "PAWEval · clean in cup", status: "Readable" },
-        { model: "Wan2.2", asset: "bc01-wan22-r000", outcome: "PAWEval · clean in cup", status: "Readable" }
-      ]
+      assetPrefix: "bc01"
+    },
+    ba01: {
+      code: "BA-01 · agent response",
+      title: "Cat response",
+      action: "Gently touch the cat once.",
+      assetPrefix: "ba01"
+    },
+    bs02: {
+      code: "BS-02 · stability",
+      title: "Block tower",
+      action: "Pull the red-marked block once from the tower.",
+      assetPrefix: "bs02"
+    },
+    bm02: {
+      code: "BM-02 · material response",
+      title: "Chocolate bar",
+      action: "Bend the chocolate bar once until it responds.",
+      assetPrefix: "bm02"
     }
   };
 
@@ -170,24 +196,18 @@
     if (rolloutAction) rolloutAction.textContent = scene.action;
 
     rolloutCards.forEach((card, index) => {
-      const clip = scene.clips[index];
+      const clip = rolloutModels[index];
       const model = card.querySelector("[data-rollout-model]");
       const video = card.querySelector("[data-rollout-video]");
       const source = video?.querySelector("source");
-      const outcome = card.querySelector("[data-rollout-outcome]");
-      const status = card.querySelector("[data-rollout-status]");
       if (!clip || !video || !source) return;
 
       if (model) model.textContent = clip.model;
-      video.poster = `static/video/rollouts/${clip.asset}.jpg`;
+      const asset = `${scene.assetPrefix}-${clip.asset}-r000`;
+      video.poster = `static/video/rollouts/${asset}.jpg`;
       video.setAttribute("aria-label", `${clip.model} rollout for ${scene.title}`);
-      source.src = `static/video/rollouts/${clip.asset}.mp4`;
+      source.src = `static/video/rollouts/${asset}.mp4`;
       video.load();
-      if (outcome) {
-        outcome.textContent = clip.outcome;
-        outcome.classList.toggle("unreadable", Boolean(clip.unreadable));
-      }
-      if (status) status.textContent = clip.status;
     });
 
     const activeTab = document.querySelector(`[data-rollout-scene="${sceneKey}"]`);

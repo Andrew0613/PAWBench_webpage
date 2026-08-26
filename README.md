@@ -21,7 +21,7 @@ Then open <http://localhost:8000/>.
 - `static/img/hero-teaser-spring.png` is the current user-selected PAWBench teaser and social preview image.
 - `static/img/scenario_taxonomy.png` is a crop-box-faithful PNG export of the manuscript's current Figure 2 (`figure/rendered/scenario_taxonomy.pdf`).
 - `static/img/rollout_budget_diagnostics.png` is the manuscript's current rollout-budget robustness figure.
-- `static/video/rollouts/` contains twelve web-compressed, base-condition `r000` rollouts for the cross-model gallery. `provenance.json` binds every clip to its PAWBench run, sample ID, PAWEval terminal label, source hash, and compressed-asset hash.
+- `static/video/rollouts/` contains 64 web-compressed, base-condition `r000` rollouts: eight generators compared in a fixed order across eight representative scenes, with four mechanisms from each PAWBench track. The gallery assigns only the active scene to the video elements and uses `preload="none"`, so the full media set is not transferred on page load. `provenance.json` records the source packages, gallery selection, encoding contract, and the available clip-level PAWEval labels and hashes.
 - The remaining figures are PAWBench manuscript figures already present in this target site.
 
 The compact arXiv, PDF, Code, and Benchmark resource controls remain disabled until their public URLs are authorized.

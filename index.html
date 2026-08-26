@@ -54,7 +54,7 @@
                   <path d="M10 16h5m0 0c5 0 4-9 7-9m-7 9h7m-7 0c5 0 4 9 7 9"></path>
                 </svg>
               </span>
-              <div><strong>PAWBench + PAWEval</strong>: 50 scenarios span eight physical mechanism groups. PAWEval maps readable rollouts to terminal outcomes, records readout failures separately, and builds the empirical distributions used for scoring.</div>
+              <div><strong>Benchmark and protocol</strong>: PAWBench formalizes probabilistic alignment with 50 scenarios across eight physical mechanism groups. PAWEval maps repeated rollouts to terminal outcomes, builds empirical distributions from readable in-schema outcomes, and reports readout failures separately.</div>
             </div>
             <div class="icon-item">
               <span class="icon-mark" aria-hidden="true">
@@ -63,7 +63,7 @@
                   <path d="m5 10 7-4 7 7 8-9"></path>
                 </svg>
               </span>
-              <div><strong>Eleven-model evaluation</strong>: current video generators miss valid futures, misallocate probability mass, or fail to produce readable outcomes across scenes. Finite-sample analysis and the human comparison do not explain the main gap.</div>
+              <div><strong>Model diagnosis</strong>: across eleven video generators, no model combines accurate outcome probabilities, broad support recovery, and reliable performance across scenes. Larger rollout budgets and the clear-label human comparison do not account for the observed gap.</div>
             </div>
             <div class="icon-item">
               <span class="icon-mark" aria-hidden="true">
@@ -74,7 +74,7 @@
                   <circle cx="15" cy="24" r="3"></circle>
                 </svg>
               </span>
-              <div><strong>Three intervention levels</strong>: language requests a future, coupled initial noise broadens finite-budget exploration, and fine-tuning shifts learned outcome frequencies. We test what each intervention changes and what it leaves unresolved.</div>
+              <div><strong>Distribution shaping</strong>: language requests named futures, coupled initial noise broadens finite-budget exploration, and fine-tuning shifts learned outcome frequencies. These interventions separate inference-time steering and exploration from changes to the model's learned predictive distribution.</div>
             </div>
           </div>
 
@@ -155,13 +155,13 @@
       <section id="motivation" class="sub-section">
         <h1 class="text">How far are current video generators from probabilistically aligned world modeling?</h1>
         <p class="text">
-          Current video generators follow instructions and produce convincing continuations from an observation and an action-like prompt. These advances make them candidates for visual world models.
+          Current video generators can follow instructions, maintain temporal coherence, and produce plausible continuations from an observation and an action-like prompt. These capabilities have strengthened the case for treating them as visual world models. Using them as world models requires testing the distribution induced by repeated rollouts.
         </p>
         <p class="text">
-          A stochastic process can produce several physically valid futures from the same initial observation and action, especially when the observation reveals only part of the state. We call a model <strong>probabilistically aligned</strong> when its repeated rollouts recover both the valid futures and their relative probabilities. Planning needs both: which consequences can occur and how often they occur.
+          A world model must do more than render one plausible continuation. When a process is stochastic, the same initial observation and action can lead to several physically valid futures. We call a model <strong>probabilistically aligned</strong> when the distribution induced by its repeated rollouts captures both which futures are possible and how likely each one is. Interaction and planning depend on both the possible consequences of an action and their relative likelihoods.
         </p>
         <p class="text">
-          Existing evaluations mostly score one generated video at a time for visual coherence, prompt alignment, or physical plausibility. A single-video score cannot show whether repeated generations collapse to a narrow subset of valid outcomes or place the wrong mass on the outcomes they do recover. PAWBench asks the distribution-level question directly: under the same observation and action, does the model recover the possible futures and their probabilities?
+          Existing evaluations largely treat generated videos as isolated outputs, scoring visual quality, temporal coherence, prompt alignment, or physical plausibility one video at a time. These criteria cannot reveal whether repeated generations collapse to a subset of valid outcomes or assign those outcomes the wrong probabilities. One plausible future is therefore not enough; PAWBench asks how far current generators are from probabilistically aligned world modeling.
         </p>
         <figure>
           <button class="figure-button" type="button" data-zoom-src="static/img/one_plausible_future.png" data-zoom-caption="A single plausible rollout can hide probability-mass errors and missing valid futures." aria-label="Enlarge one plausible future figure">
@@ -176,25 +176,25 @@
         <div class="alignment-levels">
           <article>
             <h3>Support alignment</h3>
-            <p>Repeated rollouts should recover the distinct valid terminal outcomes available under the same condition. Producing only one or two outcomes indicates missing support.</p>
+            <p>Repeated rollouts should recover the distinct valid terminal outcomes available under the same condition. Producing only one or two outcomes across repeated samples indicates that the generator has missed part of the valid support for that specific scene.</p>
           </article>
           <article>
             <h3>Probability-mass alignment</h3>
-            <p>When reference probabilities are known, each valid outcome should also occur in the right proportion. A model can cover every outcome and still allocate the wrong probability mass.</p>
+            <p>When reference probabilities are known, each valid outcome should also occur in the right proportion. A model can cover every outcome and still allocate the wrong probability mass among those outcomes.</p>
           </article>
         </div>
         <p class="text evidence-note">
-          PAWBench evaluates distributions over terminal outcomes. It does not measure the complete distribution of intermediate trajectories.
+          PAWBench evaluates the induced distribution over terminal outcomes. This abstraction groups together trajectories that reach the same result; it does not claim to measure the complete distribution over intermediate states or frames.
         </p>
       </section>
 
       <section id="benchmark" class="sub-section">
         <h1 class="text">PAWBench: A Benchmark for Possible Futures</h1>
         <p class="text">
-          Each PAWBench item fixes a source image, one atomic action prompt, and a finite set of valid terminal outcomes. A video generator receives the same image and action repeatedly. PAWEval maps the rollouts to terminal outcomes and aggregates them into an empirical distribution. Holding the inputs fixed attributes variation across rollouts to the model-induced future distribution.
+          Each PAWBench item specifies a source image, one atomic action prompt, and a finite set of valid terminal outcomes. When available, it also provides a reference distribution over those outcomes. A generator receives the same image and action for K repeated rollouts, which PAWEval maps to terminal outcomes and aggregates into an empirical distribution. Fixing the inputs makes variation across rollouts reflect the model-induced future distribution rather than changes in the prompt or image. This repeated-rollout contract is shared by every system in the comparison.
         </p>
         <p class="text">
-          The benchmark contains 50 scenarios across eight physical mechanism groups. <strong>PAW-Calibration</strong> uses 25 scenarios with analytically specified or symmetry-derived reference probabilities and measures probability-mass error. <strong>PAW-Coverage</strong> uses 25 scenarios whose valid outcomes can be enumerated but whose probabilities cannot be specified reliably, and measures how much of that valid support appears across repeated rollouts. The two tracks remain separate because observing every valid future does not guarantee assigning each future the right probability.
+          The benchmark contains 50 scenarios across eight physical mechanism groups. <strong>PAW-Calibration</strong> includes 25 scenarios with analytically specified or symmetry-derived reference distributions and tests probability-mass alignment. <strong>PAW-Coverage</strong> includes 25 scenarios whose valid outcomes can be enumerated but whose relative probabilities cannot be specified reliably, and tests valid-support recovery. We report the tracks separately because recovering every valid outcome does not establish that the model assigns the right probability to each one. The two tracks answer different questions about the induced future distribution, so neither can substitute for the other.
         </p>
 
         <figure class="benchmark-taxonomy-figure">
@@ -206,17 +206,17 @@
           </figcaption>
         </figure>
         <p class="text">
-          We curate every scenario around a visible stochastic mechanism, a single judgeable action, and a finite set of visually distinguishable outcomes. Before evaluating any model, we fix the source image, prompt, outcome set, failure criteria, and, where applicable, the reference probabilities.
+          Repeated-rollout statistics are meaningful only when the future distribution is well defined. We therefore require a visible stochastic mechanism rather than prompt ambiguity, one atomic action whose completion can be judged from video, and a finite set of visually distinguishable terminal outcomes. Before evaluating any model, we finalize the source image, action prompt, outcome set, failure criteria, and, for PAW-Calibration, the reference distribution. We fix this scenario contract before any generator produces a rollout and before any result enters the benchmark.
         </p>
       </section>
 
       <section id="paweval" class="sub-section">
         <h1 class="text">PAWEval: Outcome-Level Evaluation for Repeated Rollouts</h1>
         <p class="text">
-          PAWEval is the outcome-level readout protocol that makes repeated videos measurable as a distribution. Each scenario provides a frozen rubric describing the terminal physical result to inspect, the valid outcome labels, and the conditions that constitute an outcome-readout failure. Gemini 3.5 Flash applies that rubric to every rollout and returns either an in-schema terminal outcome or a readout failure.
+          PAWEval is the outcome-level protocol that turns repeated video rollouts into a distributional measurement. Each scenario provides a fixed rubric describing the terminal physical result to inspect, the valid outcome labels, and the conditions for an outcome-readout failure. Gemini 3.5 Flash applies this rubric to each rollout and returns either an in-schema terminal outcome or a readout failure. The same rubric and outcome vocabulary apply across all K=50 rollouts for that scene.
         </p>
         <p class="text">
-          PAWEval normalizes readable, in-schema outcomes into a conditional empirical distribution. It reports readout failures separately because those failures are not physical outcomes. PAW-Calibration compares the conditional distribution with its reference using total variation distance; PAW-Coverage measures the fraction of valid outcomes recovered. A model-scene pair is scored only when at least 20 of its 50 rollouts are readable and in schema. Scene Pass Rate (SPR) reports the percentage of all 25 scenes in a track that pass this gate.
+          PAWEval normalizes readable, in-schema outcomes into a conditional empirical distribution and reports readout failures separately because they are not physical outcomes in the scenario's valid set. PAW-Calibration compares this conditional distribution with its reference using total variation distance (TVD); PAW-Coverage measures the fraction of valid outcomes recovered. A model-scene pair is scoreable only when at least 20 of its 50 rollouts are readable and in schema. Scene Pass Rate (SPR) reports the percentage of all 25 scenes in a track that pass this gate. The conditional metrics and SPR therefore answer different questions and must be reported together for every model.
         </p>
         <figure>
           <button class="figure-button" type="button" data-zoom-src="static/img/paweval_overview.png" data-zoom-caption="PAWEval maps K repeated rollouts under the same state and action into outcome distributions." aria-label="Enlarge PAWEval overview">
@@ -234,7 +234,7 @@
         <section class="paper-subsection" aria-labelledby="evaluation-setup-title">
           <h2 id="evaluation-setup-title">Evaluation Setup</h2>
           <p class="text">
-            We evaluate eleven current video generation models on both PAW-Calibration and PAW-Coverage. Every system receives the same source image and action prompt, with <b>K=50</b> independent rollouts per scenario. A scene passes the outcome-readout gate when at least 20 of 50 rollouts yield readable, in-schema outcomes; Scene Pass Rate (SPR) is the percentage of all 25 scenes in a track that pass this gate.
+            We evaluate eleven current video generation models on both PAW-Calibration and PAW-Coverage. For each scenario, every system receives the same source image and action prompt and produces <b>K=50</b> independent rollouts using its default inference configuration unless noted otherwise. A scene passes the outcome-readout gate when at least 20 of 50 rollouts yield readable, in-schema outcomes. Scene Pass Rate (SPR) is the percentage of all 25 scenes in a track that pass this gate. This keeps model comparisons on one common sampling and readout contract for all systems.
           </p>
         </section>
 
@@ -242,7 +242,7 @@
           <h2 id="benchmark-results-title">Benchmark Results</h2>
           <div class="table-intro" id="main-results-note">
             <p>
-              <strong>Table 1: Main PAWBench results.</strong> PAW-Calibration reports conditional TVD ×100 (lower is better); a 70/30 model distribution against a 50/50 reference scores 20, while an exact match scores 0. PAW-Coverage reports conditional valid-support recovery percentage (higher is better). Avg. is computed over passing scenes; SPR is the percentage of all 25 scenes that pass. N/A means no scene in that mechanism group passes the gate.
+              <strong>Table 1: Main PAWBench results.</strong> PAW-Calibration reports conditional TVD ×100 (lower is better); a 70/30 model distribution against a 50/50 reference scores 20, while an exact match scores 0. PAW-Coverage reports conditional valid-support recovery percentage (higher is better). Avg. is computed over passing scenes; SPR is the percentage of all 25 scenes that pass. N/A means that no scene in the reported mechanism group passes the gate.
             </p>
             <p class="swipe-hint">Swipe horizontally to compare all metrics.</p>
           </div>
@@ -279,17 +279,17 @@
           </div>
 
           <p class="text">
-            <strong>No model leads on probability mass, support recovery, and reliability at the same time.</strong> Cosmos 3 Super I2V has the lowest conditional Calibration TVD, 20.5, with an 80.0% Calibration SPR. LTX-2.3 has the highest conditional Coverage average, 71.7, computed over the 72.0% of Coverage scenes that pass. Seedance 2 reaches 100.0% Calibration SPR, and LingBot-Video-MoE reaches 100.0% Coverage SPR; neither leads the corresponding conditional metric. The conditional score and SPR capture different failure modes and are reported separately.
+            <strong>No model combines well-aligned probability mass, broad support recovery, and reliable performance across scenes.</strong> Cosmos 3 Super I2V has the lowest conditional Calibration TVD, 20.5, but only 80.0% of its Calibration scenes pass the outcome-readout gate. LTX-2.3 has the highest conditional Coverage average, 71.7, but that average is computed over the 72.0% of Coverage scenes that pass. Seedance 2 and LingBot-Video-MoE pass every scene on Calibration and Coverage, respectively, yet neither leads the corresponding conditional metric. Conditional alignment and scene-level reliability must therefore be read together when comparing the eleven generators in Table 1.
           </p>
           <p class="text">
-            <strong>Coverage and probability mass expose different errors.</strong> A generator can recover many valid outcomes while allocating their probability mass incorrectly. It can also match the observed frequencies of a narrow set while leaving valid alternatives unseen. PAW-Coverage and PAW-Calibration report these failures separately; the benchmark does not collapse them into one score.
+            <strong>Recovering valid futures is not the same as assigning them the right probability.</strong> A generator may expose many plausible outcomes while allocating probability mass incorrectly, or closely match the frequencies of observed outcomes while leaving valid alternatives unseen. PAW-Coverage and PAW-Calibration therefore expose complementary failures and remain separate rather than being collapsed into one score. Recovering valid support is necessary, but it cannot establish correct probability allocation within that support under the same condition in PAWBench.
           </p>
         </section>
 
         <section class="paper-subsection" aria-labelledby="causal-controls-title">
           <h2 id="causal-controls-title">Causal and Non-Causal Controls</h2>
           <p class="text">
-            A probabilistic world model should change its future distribution only when the physical transition changes. We therefore pair physically causal interventions, which alter the transition and reference distribution, with non-causal interventions that change only an irrelevant visual or textual cue.
+            A probabilistic world model should change its future distribution when the physical transition changes and preserve it when the transition does not. We test this with paired interventions: causal interventions alter the transition and its reference distribution, while non-causal interventions change only an irrelevant visual or textual cue that leaves the physical process unchanged. The paired design tests both requirements under the same source action.
           </p>
           <figure>
             <button class="figure-button" type="button" data-zoom-src="static/img/causal_noncausal_interventions.png" data-zoom-caption="Models underreact to physically causal interventions and overreact to non-causal cues." aria-label="Enlarge causal and non-causal control figure">
@@ -300,14 +300,14 @@
             </figcaption>
           </figure>
           <p class="text">
-            Model distributions shift incompletely or in the wrong direction under physically causal changes, while irrelevant text can redirect probability mass despite an unchanged reference distribution. The models respond to altered inputs, but not reliably according to whether the underlying physical transition changed.
+            Model distributions shift incompletely or in the wrong direction under physically causal interventions. Under non-causal interventions, distractor text redirects probability mass even though the reference distribution is unchanged. The models respond to altered inputs, but their response does not reliably track whether the underlying physical transition changed or remained unchanged. This asymmetry persists under the fixed source action and readout rubric.
           </p>
         </section>
 
         <section class="paper-subsection" aria-labelledby="evaluation-robustness-title">
           <h2 id="evaluation-robustness-title">Robustness of the Evaluation Protocol</h2>
           <p class="text">
-            We test two measurement explanations for the observed gap: whether the rollout budget is too small, and whether PAWEval disagrees with humans on clear terminal outcomes.
+            The main results could reflect either model behavior or a limitation of the evaluation protocol. We therefore test two measurement explanations for the observed gap: too few rollouts and disagreement between PAWEval and human judgments on clear terminal outcomes. Together, these probes address the sampling and readout stages while preserving the original benchmark target and outcome space used for the main model comparison.
           </p>
           <h3>Rollout Budget Sensitivity</h3>
           <figure class="rollout-budget-figure">
@@ -319,12 +319,12 @@
             </figcaption>
           </figure>
           <p class="text">
-            Doubling the rollout budget leaves calibration largely unchanged, although coverage continues to rise for three of four models. Across eleven generators, observed TVD averages 31.2; in a matched finite-sample null that preserves passing scenes and readable counts, 99% of simulated averages remain below 9.22.
+            Doubling the rollout budget leaves calibration largely unchanged, although coverage continues to rise for three of four models. Additional samples can uncover more valid outcomes without correcting their observed relative frequencies. Across eleven generators, observed TVD averages 31.2; in a matched finite-sample null that preserves each model's passing scenes and readable counts, 99% of simulated averages remain below 9.22, far below the calibration error observed across the evaluated generators under the same outcome-readout protocol.
           </p>
 
           <h3>Agreement with Human Judgments</h3>
           <p class="text">
-            Seven independent human judgments use the same scene-specific outcome space. The comparison below includes only videos where PAWEval and the human panel both provide a clear terminal-outcome label.
+            We collect seven independent human judgments per video using the same scene-specific outcome space as PAWEval. The comparison below includes only videos for which both PAWEval and the human panel provide a clear terminal-outcome label. This gives both evaluators the same finite outcome vocabulary for every comparison.
           </p>
           <div class="table-container human-table" role="region" aria-labelledby="human-results-title" aria-describedby="human-results-boundary" tabindex="0">
             <table class="data-table">
@@ -339,7 +339,7 @@
             </table>
           </div>
           <p class="text evidence-note" id="human-results-boundary">
-            PAWEval matches the decisive human label on 722 of 888 clear, comparable videos (81.3%). The denominator excludes videos without a clear label from either side. This comparison does not measure all-row accuracy or validate TVD, Coverage, or model rankings.
+            PAWEval matches the decisive human label on 722 of 888 clear, comparable videos (81.3%). Disagreement on clear outcomes therefore cannot by itself account for the PAWBench gap. The denominator excludes videos without a clear label from either side, so this comparison does not measure all-row accuracy or validate TVD, Coverage, or model rankings. It only tests agreement where both evaluators return a decisive terminal label.
           </p>
         </section>
       </section>
@@ -347,13 +347,16 @@
       <section id="alignment-interventions" class="sub-section paper-section">
         <h1 class="text">Toward Probabilistically Aligned World Modeling</h1>
         <p class="text">
-          A generator can follow a requested endpoint and still sample the wrong distribution across repeated rollouts. We test three places where that distribution may change: language chooses a requested future, initial noise selects among accessible futures, and training changes the learned allocation of outcome mass.
+          Generating one plausible future, or controlling which single future is produced, does not amount to controlling a distribution of futures. We intervene at three interfaces that can shape that distribution: language specifies a requested future, initial noise sampling selects among accessible futures, and model learning changes how probability mass is allocated among outcomes. The three probes separate inference-time steering and finite-budget exploration from changes to the learned predictive distribution. Each probe tests a different source of change in the future distribution.
         </p>
 
         <section class="paper-subsection" aria-labelledby="language-steering-title">
           <h2 id="language-steering-title">Predicting and Steering Outcome Distributions via Language</h2>
           <p class="text">
-            We separate future selection from video realization. Direct VLM sampling measures which outcomes a language controller selects; prompt engineering tests selection followed by generation; Oracle PE supplies target outcomes directly to isolate whether the generator realizes the requested future.
+            Language can steer a video generator by naming a future in its prompt, but aligning repeated rollouts requires both selecting targets with the right distribution and realizing each selected target in video. We evaluate these requirements separately so that an error in future selection is not confused with an error in video realization. A failure at either stage leaves the repeated-rollout distribution misaligned even if the other stage succeeds.
+          </p>
+          <p class="text">
+            We test three settings. Direct VLM future sampling repeatedly predicts what may happen from the same observation and action, then maps those predictions into the PAWBench outcome space without video generation. Prompt engineering (PE) asks GPT-5.5 to select a possible outcome and write a generator prompt for each rollout. Oracle PE supplies the target outcomes directly, following the reference distribution in PAW-Calibration and balancing valid outcomes in PAW-Coverage, to isolate whether the generator realizes the requested future. This ordering separates target selection from target realization under the same outcome contract for each repeated rollout shown here.
           </p>
           <p class="swipe-hint">Swipe horizontally to compare all metrics.</p>
           <div class="table-container" role="region" aria-labelledby="vlm-results-title" tabindex="0">
@@ -406,19 +409,22 @@
             <figcaption><strong>Figure 6: Oracle PE often misses requested outcomes.</strong> Across the complete 2,500-row target-declaring roster per model, invalid, missing, unreadable, malformed, and different outcomes count as non-following.</figcaption>
           </figure>
           <p class="text">
-            Direct VLM sampling already produces misaligned outcome distributions. GPT-5.5 prompt engineering adds a second failure when the generator misses the selected endpoint. Oracle PE improves conditional TVD and Coverage for every generator, but the generators realize only 37.6-58.1% of requested outcomes. Language changes individual rollouts without aligning their aggregate distribution.
+            Direct VLM future sampling is already misaligned: the best Calibration TVD is 34.8, and the best Coverage is 46.6%. GPT-5.5's PE selections score 44.3 Calibration TVD and 35.0% Coverage before video generation. Oracle PE improves conditional TVD and Coverage for every generator, but the generators realize only 37.6–58.1% of requested outcomes. Language can change individual rollouts without reliably aligning their aggregate distribution. Better target selection alone therefore does not align the generator under the fixed observation and action.
           </p>
         </section>
 
         <section class="paper-subsection" aria-labelledby="noise-exploration-title">
           <h2 id="noise-exploration-title">Broadening Outcome Exploration via Initial Noise</h2>
           <p class="text">
-            Holding the action prompt, generator, and K=50 budget fixed, Couple to Control (C2C) introduces negative dependence among initial-noise samples while preserving each sample's standard Gaussian marginal. The matched comparison isolates finite-budget exploration; it does not test a change in the model's learned distribution.
+            The language interventions change which future is requested. To test what sampling alone can recover, we instead hold the request and generator fixed and ask whether independent noise draws repeatedly visit the same modes even when other valid outcomes remain accessible. This isolates finite-budget exploration under one unchanged generator and prompt. The generator, prompt, and rollout budget remain unchanged throughout this comparison.
+          </p>
+          <p class="text">
+            Couple to Control (C2C) introduces negative dependence among the <b>K=50</b> initial-noise samples while preserving each sample's standard Gaussian marginal. C2C and independent sampling use the same action prompt, generator, rollout budget, and evaluation contract. This matched comparison isolates finite-budget exploration; it does not test a change in the model's learned distribution. Only the dependence among the sampled noise vectors changes.
           </p>
           <p class="swipe-hint">Swipe horizontally to compare all metrics.</p>
           <div class="table-container" role="region" aria-labelledby="c2c-results-title" tabindex="0">
             <table class="data-table">
-              <caption id="c2c-results-title"><strong>Table 4: Coupled noise broadens finite-gallery exploration.</strong> Base and C2C use matched prompts, generators, rollout budgets, and readout contracts.</caption>
+              <caption id="c2c-results-title"><strong>Table 4: Coupled noise broadens finite-budget exploration.</strong> Base and C2C use matched prompts, generators, rollout budgets, and readout contracts.</caption>
               <thead>
                 <tr><th scope="col" rowspan="2">Model / condition</th><th scope="colgroup" colspan="6" class="tb-hdr">PAW-Calibration: TVD ×100 ↓</th><th scope="colgroup" colspan="6" class="tb-hdr">PAW-Coverage: Coverage % ↑</th></tr>
                 <tr><th scope="col">Avg.</th><th scope="col">SPR</th><th scope="col">Toss</th><th scope="col">Rot.</th><th scope="col">Rout.</th><th scope="col">Draw</th><th scope="col">Avg.</th><th scope="col">SPR</th><th scope="col">Coll.</th><th scope="col">Stab.</th><th scope="col">Agent</th><th scope="col">Mat.</th></tr>
@@ -434,14 +440,14 @@
             </table>
           </div>
           <p class="text">
-            Among scenes that pass in each condition, C2C lowers mean Calibration TVD and raises mean Coverage for all three generators. SPR rises for some conditions and falls or stays fixed for others. The result supports broader finite-budget exploration under the matched setup; it does not establish a change in learned probability allocation.
+            Across the scenes that pass in each condition, C2C lowers mean Calibration TVD and raises mean Coverage for all three generators. The gains vary by mechanism and do not consistently raise SPR. Under this matched setup, C2C helps 50 rollouts explore the model's accessible outcomes more broadly; it does not establish that the model has learned a different probability allocation. The comparison remains finite-budget evidence, not a claim about the model's limiting distribution.
           </p>
         </section>
 
         <section class="paper-subsection" aria-labelledby="training-distribution-title">
           <h2 id="training-distribution-title">Reshaping the Model's Intrinsic Distribution via Fine-Tuning</h2>
           <p class="text">
-            We train five Wan2.2 LoRA models on different left/right pencil-fall mixtures while holding the recipe and budget fixed. We evaluate each model on upright and left-leaning scenes with a direction-neutral prompt and K=50 rollouts.
+            Unlike language and noise interventions, changing the training distribution can alter a generator's learned allocation of probability mass. We train five Wan2.2 LoRA models on mixtures containing different proportions of left- and right-falling pencil videos while holding the training recipe and budget fixed. Each model is evaluated on upright and left-leaning pencil scenes with a direction-neutral prompt and <b>K=50</b> rollouts. The two evaluation scenes therefore demand different state-conditional behavior from the same adapted model under a fixed action.
           </p>
           <p class="swipe-hint">Swipe horizontally to compare all columns.</p>
           <div class="table-container training-table" role="region" aria-labelledby="training-results-title" tabindex="0">
@@ -464,7 +470,10 @@
             <figcaption><strong>Figure 7: Training steers outcome mass across scenes.</strong> Frequencies are conditional on readable left/right outcomes; invalid readouts are excluded.</figcaption>
           </figure>
           <p class="text">
-            Training composition shifts generated outcome mass, and the same global adjustment moves both scenes in the same direction. Mixtures that improve the left-leaning scene make the upright scene nearly always fall left. The two scenes require different distributions under the same action; a global change in outcome frequency cannot supply that scene-conditioned response.
+            Increasing the share of left-falling videos in training raises the generated left-fall frequency in both scenes, but the response is nonlinear and does not track the training proportion one-to-one. The result shows that training composition can reshape a model's outcome distribution, although the actual training distributions of current generators are unknown and are not inferred here. This experiment does not recover or estimate the pretraining distribution.
+          </p>
+          <p class="text">
+            None of the five adapted models matches both scene-specific references. Mixtures that bring the left-leaning pencil to its 100/0 reference make the upright pencil fall left almost every time, instead of matching its 50/50 reference. The same global adjustment moves both scenes in the same direction. Probabilistic alignment requires the outcome distribution to change with the initial physical state under a fixed action. The adapted model instead applies a similar shift to both states.
           </p>
         </section>
       </section>
@@ -472,15 +481,26 @@
       <section id="visual-evidence" class="sub-section">
         <h1 class="text">Model Rollout Gallery</h1>
         <p class="text">
-          Compare four video generators under the same initial observation and action. Each tab shows one selected base-condition rollout per model; PAWEval labels describe only the displayed clip and are not model-level scores.
+          The gallery compares eight video generators under the same source image and action for eight representative PAWBench scenes: four PAW-Calibration mechanisms and four PAW-Coverage mechanisms. Each tab keeps the model order fixed and shows one base-condition rollout per model. Each displayed clip illustrates one sampled future rather than a model-level score or distributional result. The gallery supports qualitative side-by-side inspection of individual clips. Model ranking and distributional claims require the full repeated-rollout results reported above.
         </p>
 
         <section class="rollout-gallery" aria-label="Cross-model rollout comparison" data-rollout-gallery>
           <div class="rollout-toolbar">
-            <div class="rollout-tabs" role="tablist" aria-label="Benchmark scenes">
-              <button class="rollout-tab active" type="button" role="tab" id="rollout-tab-a01" aria-selected="true" aria-controls="rollout-panel" data-rollout-scene="a01">Coin flip</button>
-              <button class="rollout-tab" type="button" role="tab" id="rollout-tab-a09" aria-selected="false" aria-controls="rollout-panel" data-rollout-scene="a09" tabindex="-1">Pencil fall</button>
-              <button class="rollout-tab" type="button" role="tab" id="rollout-tab-bc01" aria-selected="false" aria-controls="rollout-panel" data-rollout-scene="bc01" tabindex="-1">Ball into cup</button>
+            <div class="rollout-tab-groups" aria-label="Benchmark scenes">
+              <div class="rollout-tab-row" role="tablist" aria-label="PAW-Calibration scenes">
+                <span class="rollout-track-label calibration">Calibration</span>
+                <button class="rollout-tab active" type="button" role="tab" id="rollout-tab-a01" aria-selected="true" aria-controls="rollout-panel" data-rollout-scene="a01">Coin flip</button>
+                <button class="rollout-tab" type="button" role="tab" id="rollout-tab-a03" aria-selected="false" aria-controls="rollout-panel" data-rollout-scene="a03" tabindex="-1">Spinner</button>
+                <button class="rollout-tab" type="button" role="tab" id="rollout-tab-a07" aria-selected="false" aria-controls="rollout-panel" data-rollout-scene="a07" tabindex="-1">Y-track</button>
+                <button class="rollout-tab" type="button" role="tab" id="rollout-tab-a13" aria-selected="false" aria-controls="rollout-panel" data-rollout-scene="a13" tabindex="-1">Blind draw</button>
+              </div>
+              <div class="rollout-tab-row" role="tablist" aria-label="PAW-Coverage scenes">
+                <span class="rollout-track-label coverage">Coverage</span>
+                <button class="rollout-tab" type="button" role="tab" id="rollout-tab-bc01" aria-selected="false" aria-controls="rollout-panel" data-rollout-scene="bc01" tabindex="-1">Ball into cup</button>
+                <button class="rollout-tab" type="button" role="tab" id="rollout-tab-ba01" aria-selected="false" aria-controls="rollout-panel" data-rollout-scene="ba01" tabindex="-1">Cat response</button>
+                <button class="rollout-tab" type="button" role="tab" id="rollout-tab-bs02" aria-selected="false" aria-controls="rollout-panel" data-rollout-scene="bs02" tabindex="-1">Block tower</button>
+                <button class="rollout-tab" type="button" role="tab" id="rollout-tab-bm02" aria-selected="false" aria-controls="rollout-panel" data-rollout-scene="bm02" tabindex="-1">Chocolate bar</button>
+              </div>
             </div>
             <div class="rollout-controls" aria-label="Synchronized video controls">
               <button type="button" data-rollout-play>Play all</button>
@@ -492,40 +512,64 @@
             <p class="rollout-scene-code" id="rollout-scene-code">A-01 · stochastic toss</p>
             <h2 id="rollout-scene-title">Coin flip</h2>
             <p><strong>Action:</strong> <span id="rollout-scene-action">Flick the coin once.</span></p>
-            <p class="rollout-boundary" id="rollout-scene-boundary">Selected rollout r000 · base condition · PAWEval terminal readout</p>
+            <p class="rollout-boundary" id="rollout-scene-boundary">Base condition · rollout r000 · qualitative comparison</p>
           </div>
 
           <div class="rollout-grid" id="rollout-panel" role="tabpanel" aria-labelledby="rollout-tab-a01">
             <article class="rollout-card" data-rollout-card>
-              <header><h3 data-rollout-model>HappyHorse</h3><span>r000</span></header>
-              <video controls muted playsinline preload="metadata" poster="static/video/rollouts/a01-happyhorse-r000.jpg" data-rollout-video aria-label="HappyHorse rollout for coin flip">
+              <header><h3 data-rollout-model>HappyHorse</h3></header>
+              <video controls muted playsinline preload="none" poster="static/video/rollouts/a01-happyhorse-r000.jpg" data-rollout-video aria-label="HappyHorse rollout for coin flip">
                 <source src="static/video/rollouts/a01-happyhorse-r000.mp4" type="video/mp4">
               </video>
-              <footer><span class="rollout-outcome" data-rollout-outcome>PAWEval · heads</span><span class="rollout-status" data-rollout-status>Readable</span></footer>
             </article>
 
             <article class="rollout-card" data-rollout-card>
-              <header><h3 data-rollout-model>Veo3.1 Fast</h3><span>r000</span></header>
-              <video controls muted playsinline preload="metadata" poster="static/video/rollouts/a01-veo31-r000.jpg" data-rollout-video aria-label="Veo3.1 Fast rollout for coin flip">
+              <header><h3 data-rollout-model>Veo3.1 Fast</h3></header>
+              <video controls muted playsinline preload="none" poster="static/video/rollouts/a01-veo31-r000.jpg" data-rollout-video aria-label="Veo3.1 Fast rollout for coin flip">
                 <source src="static/video/rollouts/a01-veo31-r000.mp4" type="video/mp4">
               </video>
-              <footer><span class="rollout-outcome unreadable" data-rollout-outcome>PAWEval · not readable</span><span class="rollout-status" data-rollout-status>Outcome hidden</span></footer>
             </article>
 
             <article class="rollout-card" data-rollout-card>
-              <header><h3 data-rollout-model>Kling 3 Std.</h3><span>r000</span></header>
-              <video controls muted playsinline preload="metadata" poster="static/video/rollouts/a01-kling3-r000.jpg" data-rollout-video aria-label="Kling 3 Standard rollout for coin flip">
+              <header><h3 data-rollout-model>Kling 3 Std.</h3></header>
+              <video controls muted playsinline preload="none" poster="static/video/rollouts/a01-kling3-r000.jpg" data-rollout-video aria-label="Kling 3 Standard rollout for coin flip">
                 <source src="static/video/rollouts/a01-kling3-r000.mp4" type="video/mp4">
               </video>
-              <footer><span class="rollout-outcome" data-rollout-outcome>PAWEval · heads</span><span class="rollout-status" data-rollout-status>Readable</span></footer>
             </article>
 
             <article class="rollout-card" data-rollout-card>
-              <header><h3 data-rollout-model>Wan2.2</h3><span>r000</span></header>
-              <video controls muted playsinline preload="metadata" poster="static/video/rollouts/a01-wan22-r000.jpg" data-rollout-video aria-label="Wan2.2 rollout for coin flip">
+              <header><h3 data-rollout-model>Wan2.2</h3></header>
+              <video controls muted playsinline preload="none" poster="static/video/rollouts/a01-wan22-r000.jpg" data-rollout-video aria-label="Wan2.2 rollout for coin flip">
                 <source src="static/video/rollouts/a01-wan22-r000.mp4" type="video/mp4">
               </video>
-              <footer><span class="rollout-outcome" data-rollout-outcome>PAWEval · heads</span><span class="rollout-status" data-rollout-status>Readable</span></footer>
+            </article>
+
+            <article class="rollout-card" data-rollout-card>
+              <header><h3 data-rollout-model>Cosmos 3 Super I2V</h3></header>
+              <video controls muted playsinline preload="none" poster="static/video/rollouts/a01-cosmos3-r000.jpg" data-rollout-video aria-label="Cosmos 3 Super I2V rollout for coin flip">
+                <source src="static/video/rollouts/a01-cosmos3-r000.mp4" type="video/mp4">
+              </video>
+            </article>
+
+            <article class="rollout-card" data-rollout-card>
+              <header><h3 data-rollout-model>LTX-2.5</h3></header>
+              <video controls muted playsinline preload="none" poster="static/video/rollouts/a01-ltx25-r000.jpg" data-rollout-video aria-label="LTX-2.5 rollout for coin flip">
+                <source src="static/video/rollouts/a01-ltx25-r000.mp4" type="video/mp4">
+              </video>
+            </article>
+
+            <article class="rollout-card" data-rollout-card>
+              <header><h3 data-rollout-model>LingBot-Video-MoE</h3></header>
+              <video controls muted playsinline preload="none" poster="static/video/rollouts/a01-lingbot-r000.jpg" data-rollout-video aria-label="LingBot-Video-MoE rollout for coin flip">
+                <source src="static/video/rollouts/a01-lingbot-r000.mp4" type="video/mp4">
+              </video>
+            </article>
+
+            <article class="rollout-card" data-rollout-card>
+              <header><h3 data-rollout-model>MiniMax H3</h3></header>
+              <video controls muted playsinline preload="none" poster="static/video/rollouts/a01-minimaxh3-r000.jpg" data-rollout-video aria-label="MiniMax H3 rollout for coin flip">
+                <source src="static/video/rollouts/a01-minimaxh3-r000.mp4" type="video/mp4">
+              </video>
             </article>
           </div>
         </section>
@@ -534,17 +578,17 @@
       <section id="conclusion" class="sub-section">
         <h1 class="text">Conclusion</h1>
         <p class="text">
-          PAWBench evaluates video generators as samplers over possible futures. Across eleven systems, none consistently matches reference probabilities, recovers valid support, and passes the outcome-readout gate across scenes. The finite-sample analysis and clear-label human comparison do not explain the observed gap. The causal controls reveal a related failure: model distributions can underreact when the physical transition changes and shift when an irrelevant cue changes.
+          World modeling requires more than producing plausible continuations: a model should capture the distribution of possible futures under the same initial observation and action. PAWBench makes this requirement measurable through repeated video rollouts. Across eleven current generators, no model consistently matches the reference probabilities while recovering the range of valid futures, and the gap cannot be explained by finite sampling or disagreement with human judgments on clear outcomes. Controlled interventions further show that model distributions do not reliably track causal changes in the physical process under the fixed PAWBench contract and readout rubric.
         </p>
         <p class="text">
-          Language requests individual outcomes, C2C broadens exploration at K=50, and fine-tuning shifts global outcome frequencies. None of these interventions recovers the correct scene-conditioned distribution across physical states. A set of videos can look plausible, diverse, or controllable and still come from a probabilistically misaligned model.
+          Language can request individual futures, coupled noise can broaden finite-budget exploration, and fine-tuning can shift outcome frequencies, but none reliably recovers the scene-conditioned distribution over possible futures. Plausible, diverse, or controllable rollouts do not by themselves establish probabilistically aligned world modeling across different physical states. The missing capability is state-conditioned control of the full future distribution.
         </p>
       </section>
 
       <section id="acknowledgment" class="sub-section">
         <h1 class="text">Acknowledgment</h1>
         <p class="text">
-          We thank <a href="https://www.rapidata.ai/" target="_blank" rel="noopener noreferrer">Rapidata</a> for providing the human study platform and the <a href="https://cambrian-mllm.github.io/" target="_blank" rel="noopener noreferrer">Cambrian authors</a> for providing the webpage template.
+          We thank <a href="https://www.rapidata.ai/" target="_blank" rel="noopener noreferrer">Rapidata</a> for the human-study platform and the <a href="https://cambrian-mllm.github.io/" target="_blank" rel="noopener noreferrer">Cambrian authors</a> for the webpage template.
         </p>
       </section>
     </main>

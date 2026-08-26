@@ -1,6 +1,40 @@
 {
-  "version": 1,
-  "selection": "One base-condition r000 rollout per model and scene; qualitative comparison only.",
+  "version": 3,
+  "selection": "One base-condition r000 rollout for eight models across eight representative scenes, with four mechanisms from each track; qualitative comparison only.",
+  "source_repository": {
+    "repo_id": "Andrew613/PAWBench-Results",
+    "revision_observed": "53235a0aa39cdf73822890d3b418620e8d051e09",
+    "packages": [
+      "manifests/shared_media_registry.jsonl",
+      "judge-intake/v2/pawbench-v2-cal25-cov25-k50-v1/pic53-open-models-lingbot-k50-v1",
+      "judge-intake/v2/pawbench-v2-cal25-cov25-k50-v1/pic84-final-wave-gt-ltx25-k50-v1"
+    ]
+  },
+  "gallery": {
+    "scenes": [
+      { "key": "a01", "scene_id": "A-01", "track": "PAW-Calibration", "title": "Coin flip" },
+      { "key": "a03", "scene_id": "A-03", "track": "PAW-Calibration", "title": "Two-color equal-sector spinner" },
+      { "key": "a07", "scene_id": "A-07", "track": "PAW-Calibration", "title": "Y-track branch" },
+      { "key": "a13", "scene_id": "A-13", "track": "PAW-Calibration", "title": "Blind draw from transparent box" },
+      { "key": "bc01", "scene_id": "BC-01", "track": "PAW-Coverage", "title": "Ball toss into cup" },
+      { "key": "ba01", "scene_id": "BA-01", "track": "PAW-Coverage", "title": "Cat response" },
+      { "key": "bs02", "scene_id": "BS-02", "track": "PAW-Coverage", "title": "Block tower" },
+      { "key": "bm02", "scene_id": "BM-02", "track": "PAW-Coverage", "title": "Chocolate bar" }
+    ],
+    "models": [
+      { "key": "happyhorse", "name": "HappyHorse" },
+      { "key": "veo31", "name": "Veo3.1 Fast" },
+      { "key": "kling3", "name": "Kling 3 Std." },
+      { "key": "wan22", "name": "Wan2.2" },
+      { "key": "cosmos3", "name": "Cosmos 3 Super I2V" },
+      { "key": "ltx25", "name": "LTX-2.5" },
+      { "key": "lingbot", "name": "LingBot-Video-MoE" },
+      { "key": "minimaxh3", "name": "MiniMax H3" }
+    ],
+    "asset_pattern": "{scene.key}-{model.key}-r000.{mp4|jpg}",
+    "clip_count": 64,
+    "label_policy": "The expanded gallery is qualitative. PAWEval outcome labels are shown only in labeled_clips below and are not extrapolated to the other clips."
+  },
   "encoding": {
     "container": "MP4",
     "video_codec": "H.264",
@@ -10,7 +44,7 @@
     "crf": 29,
     "fast_start": true
   },
-  "clips": [
+  "labeled_clips": [
     {
       "asset": "a01-happyhorse-r000.mp4",
       "scene_id": "A-01",
@@ -50,46 +84,6 @@
       "paweval_outcome": "heads",
       "source_sha256": "5ad18e7a199623335adb9ced9e2b97d20a0392221713b430f04326582de49792",
       "web_sha256": "df50df4b7664eec09cdbfc79764d553d6c38bbe7f8f77882f29bf78ae031a4e3"
-    },
-    {
-      "asset": "a09-happyhorse-r000.mp4",
-      "scene_id": "A-09",
-      "model": "HappyHorse",
-      "run_id": "PAW-RUN-000013",
-      "sample_id": "picaworld_track_a__A-09__happy_horse__r000",
-      "paweval_outcome": "falls_right",
-      "source_sha256": "1ef38a7a7a22ce90e47283ad8ede3c7c8768299f3b0b97c3e38f3c4949a4a49d",
-      "web_sha256": "3634da5be55a80971cbf4fd70a845acd456400ec0407847ca20b44bf0c0d848c"
-    },
-    {
-      "asset": "a09-veo31-r000.mp4",
-      "scene_id": "A-09",
-      "model": "Veo3.1 Fast",
-      "run_id": "PAW-RUN-000015",
-      "sample_id": "picaworld_track_a__A-09__veo31__r000",
-      "paweval_outcome": "falls_right",
-      "source_sha256": "e03b32758ae1d4a8cae449e3866c36bc4215d1ba00daf01a466402b2d3b05124",
-      "web_sha256": "2e26390bcbf599251966b225a354cba6057dc9d4c79b34e7b4c1f9c37391783a"
-    },
-    {
-      "asset": "a09-kling3-r000.mp4",
-      "scene_id": "A-09",
-      "model": "Kling 3 Std.",
-      "run_id": "PAW-RUN-000017",
-      "sample_id": "picaworld_track_a__A-09__kling_v3_std__r000",
-      "paweval_outcome": "falls_left",
-      "source_sha256": "119bd2f38d313f334a7145b6845e76116130b118b9d4fb588d03f801f7bdd175",
-      "web_sha256": "9eba5e5e0a0833a36a7b3bb2b0cb5bf3cf6996ac88afbd9cd690a1cfdbfcf180"
-    },
-    {
-      "asset": "a09-wan22-r000.mp4",
-      "scene_id": "A-09",
-      "model": "Wan2.2",
-      "run_id": "PAW-RUN-000023",
-      "sample_id": "stagbench_wan22_i2v_k50__A-09__wan2.2__r000",
-      "paweval_outcome": "falls_right",
-      "source_sha256": "a4bc14573056d62104c8bf479190c0efb3cbf80bc05cbfc0c09be97d71c7c3fc",
-      "web_sha256": "8c3c79d365b3b4f75f313b709289024f297bf50f9be0e67f4d728ba99192eece"
     },
     {
       "asset": "bc01-happyhorse-r000.mp4",
