@@ -883,7 +883,8 @@ figcaption {
   border-bottom: 1px solid #dce5e8;
 }
 
-.data-table th:first-child {
+.data-table tbody th:first-child,
+.data-table thead tr:first-child > th:first-child {
   position: sticky;
   left: 0;
   z-index: 1;
@@ -898,7 +899,7 @@ figcaption {
   font-weight: 800;
 }
 
-.data-table thead th:first-child {
+.data-table thead tr:first-child > th:first-child {
   z-index: 3;
   background: #ecf6fb;
 }
