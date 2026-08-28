@@ -24,7 +24,7 @@ Then open <http://localhost:8000/>.
 - `static/video/rollouts/` contains 64 web-compressed, base-condition `r000` rollouts: eight generators compared in a fixed order across eight representative scenes, with four mechanisms from each PAWBench track. The gallery assigns only the active scene to the video elements and uses `preload="none"`, so the full media set is not transferred on page load. `provenance.json` records the source packages, gallery selection, encoding contract, and the available clip-level PAWEval labels and hashes.
 - The remaining figures are PAWBench manuscript figures already present in this target site.
 
-The compact arXiv, PDF, Code, and Benchmark resource controls remain disabled until their public URLs are authorized.
+The compact arXiv, PDF, Code, and Benchmark resource controls point to the public paper, evaluator, and benchmark package.
 
 ## Files
 
